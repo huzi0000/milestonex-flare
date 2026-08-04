@@ -16,6 +16,7 @@ export default defineConfig({
       input: {
         main: new URL("./index.html", import.meta.url).pathname,
         deploy: new URL("./deploy.html", import.meta.url).pathname,
+        lifecycle: new URL("./lifecycle.html", import.meta.url).pathname,
       },
     },
   },

@@ -16,6 +16,8 @@ Responsive React/Vite interface for the MilestoneX Coston2 prototype.
 - Explicit prototype labeling for actions that are not yet wired to deployed contracts
 - Dedicated `/deploy.html` Coston2 deployment console using injected MetaMask signing
 - Sequential bytecode-verified deployment and downloadable public manifest
+- Guided `/lifecycle.html` two-wallet workflow for real contract writes
+- Live project, allowance, escrow, evidence, release, role, and receipt state
 
 ## Run
 

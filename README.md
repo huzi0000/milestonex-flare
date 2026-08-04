@@ -6,6 +6,10 @@ MilestoneX is a non-custodial Coston2 prototype that helps clients and freelance
 
 > Built for the Flare Summer Signal Hackathon — Interoperable Asset Products track.
 
+**Live application:** https://milestonex-flare.vercel.app/  
+**Coston2 deployment console:** https://milestonex-flare.vercel.app/deploy.html  
+**Live lifecycle console:** https://milestonex-flare.vercel.app/lifecycle.html
+
 ## Why it exists
 
 Cross-border service work often begins with a trust problem:
@@ -46,7 +50,9 @@ MilestoneX turns FXRP into programmable project escrow while using Flare's decen
 - Responsive React/Vite application shell implemented
 - Live read-only Coston2 block, FXRP, wallet-balance, and FTSOv2 price integration implemented
 - Interactive project dashboard, project audit view, milestone workflow, activity view, and project-creation flow implemented
-- Testnet contract deployment and write integration in progress
+- Oracle adapter, EIP-712 forwarder, and milestone escrow deployed and independently verified on Coston2
+- Guided two-account lifecycle console implemented for real create, approve, fund, evidence, and release transactions
+- Main application write integration in progress
 
 See [`TECHNICAL_SPIKE.md`](./TECHNICAL_SPIKE.md) for the verified addresses and initial feasibility results.
 
@@ -78,6 +84,16 @@ npx hardhat run scripts/check-coston2.ts --network coston2
 ```
 
 This check does not need a private key.
+
+## Coston2 contracts
+
+| Component | Address |
+|---|---|
+| FTSOv2 XRP/USD adapter | [`0xb49fD561664199fA28C9ed65644BF6f3e1332DB0`](https://coston2-explorer.flare.network/address/0xb49fD561664199fA28C9ed65644BF6f3e1332DB0) |
+| EIP-712 funding forwarder | [`0xc8d3A6F34e6595369A5ED0a369EBD7838c726e92`](https://coston2-explorer.flare.network/address/0xc8d3A6F34e6595369A5ED0a369EBD7838c726e92) |
+| Milestone escrow | [`0xDfC525b55837687A0EAA04e99491a74cBa0B78EE`](https://coston2-explorer.flare.network/address/0xDfC525b55837687A0EAA04e99491a74cBa0B78EE) |
+
+See [`DEPLOYMENT_VERIFICATION.md`](./DEPLOYMENT_VERIFICATION.md) and [`contracts/deployments/coston2-verification.json`](./contracts/deployments/coston2-verification.json) for independent receipt, bytecode, linkage, and oracle checks.
 
 ## Web application
 
@@ -111,6 +127,19 @@ Contract artifacts for the console are generated from Hardhat outputs:
 cd contracts
 npm run export:web
 ```
+
+### Live lifecycle console
+
+Open `/lifecycle.html` to complete a real two-account testnet flow:
+
+1. Connect the client wallet.
+2. Create a one-milestone project.
+3. Approve the quoted test FXRP.
+4. Fund the deployed escrow.
+5. Switch to the contractor account and submit an evidence hash.
+6. Switch back to the client and release payment.
+
+The console reads contract state after every transaction and links each receipt to the Coston2 explorer.
 
 ## Security
 
