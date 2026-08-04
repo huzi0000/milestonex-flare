@@ -8,6 +8,7 @@
     "test": "hardhat test",
     "export:web": "npm run compile && node scripts/export-web-artifacts.cjs",
     "verify:coston2": "ts-node scripts/verify-coston2-deployment.ts",
+    "verify:project": "ts-node scripts/verify-project-lifecycle.ts",
     "clean": "hardhat clean"
   },
   "devDependencies": {

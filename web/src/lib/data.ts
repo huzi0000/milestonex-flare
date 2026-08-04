@@ -22,6 +22,14 @@ export type Project = {
   releasedFxrp: number;
   status: "funded" | "created" | "completed" | "cancelled";
   due: string;
+  source?: "live" | "demo";
+  contractAddress?: string;
+  proof?: {
+    created: string;
+    funded: string;
+    evidence: string;
+    released: string;
+  };
   milestones: Milestone[];
 };
 
@@ -38,6 +46,7 @@ export const demoProjects: Project[] = [
     releasedFxrp: 782.2,
     status: "funded",
     due: "Aug 22, 2026",
+    source: "demo",
     milestones: [
       {
         id: 0,
@@ -79,6 +88,7 @@ export const demoProjects: Project[] = [
     releasedFxrp: 0,
     status: "funded",
     due: "Sep 4, 2026",
+    source: "demo",
     milestones: [
       {
         id: 0,
@@ -118,6 +128,7 @@ export const demoProjects: Project[] = [
     releasedFxrp: 884.08,
     status: "completed",
     due: "Jul 28, 2026",
+    source: "demo",
     milestones: [
       {
         id: 0,

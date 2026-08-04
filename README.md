@@ -52,7 +52,9 @@ MilestoneX turns FXRP into programmable project escrow while using Flare's decen
 - Interactive project dashboard, project audit view, milestone workflow, activity view, and project-creation flow implemented
 - Oracle adapter, EIP-712 forwarder, and milestone escrow deployed and independently verified on Coston2
 - Guided two-account lifecycle console implemented for real create, approve, fund, evidence, and release transactions
-- Main application write integration in progress
+- Project #1 completed end-to-end on Coston2 with `4.663805 FXRP` funded and released
+- Full lifecycle events, FXRP transfer, accounting, evidence hash, and zero remaining escrow balance independently verified
+- Main application live-project integration and final submission polish in progress
 
 See [`TECHNICAL_SPIKE.md`](./TECHNICAL_SPIKE.md) for the verified addresses and initial feasibility results.
 
@@ -94,6 +96,8 @@ This check does not need a private key.
 | Milestone escrow | [`0xDfC525b55837687A0EAA04e99491a74cBa0B78EE`](https://coston2-explorer.flare.network/address/0xDfC525b55837687A0EAA04e99491a74cBa0B78EE) |
 
 See [`DEPLOYMENT_VERIFICATION.md`](./DEPLOYMENT_VERIFICATION.md) and [`contracts/deployments/coston2-verification.json`](./contracts/deployments/coston2-verification.json) for independent receipt, bytecode, linkage, and oracle checks.
+
+The first real workflow is documented in [`PROJECT_1_VERIFICATION.md`](./PROJECT_1_VERIFICATION.md) with machine-readable evidence at [`contracts/deployments/project-1-verification.json`](./contracts/deployments/project-1-verification.json).
 
 ## Web application
 

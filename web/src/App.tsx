@@ -23,6 +23,7 @@ import {
   Info,
   Layers3,
   LayoutDashboard,
+  LoaderCircle,
   Menu,
   Milestone as MilestoneIcon,
   MoreHorizontal,
@@ -50,6 +51,8 @@ import {
   type NetworkSnapshot,
 } from "./lib/flare";
 import { demoProjects, fxrp, money, type Project } from "./lib/data";
+import { getLiveProjects } from "./lib/milestonex";
+import { deployment } from "./generated/deployment";
 
 type View = "dashboard" | "project" | "create" | "activity" | "settings";
 type MilestoneDraft = { title: string; amount: string };
@@ -167,6 +170,8 @@ function ProjectCard({ project, onOpen }: { project: Project; onOpen: () => void
     <button className="project-card" onClick={onOpen}>
       <div className="project-card-top">
         <div className="project-symbol"><BriefcaseBusiness size={20} /></div>
+        {project.source === "live" && <span className="live-source"><span /> LIVE ON COSTON2</span>}
+        {project.source === "demo" && <span className="demo-source">UI PREVIEW</span>}
         <StatusPill status={project.status} />
         <MoreHorizontal className="project-more" size={19} />
       </div>
@@ -194,17 +199,22 @@ function Dashboard({
   onRefreshNetwork,
   onOpenProject,
   onCreate,
+  liveLoading,
 }: {
   projects: Project[];
   snapshot: NetworkSnapshot | null;
   loadingNetwork: boolean;
+  liveLoading: boolean;
   onRefreshNetwork: () => void;
   onOpenProject: (project: Project) => void;
   onCreate: () => void;
 }) {
-  const active = projects.filter((p) => p.status === "funded");
-  const protectedFxrp = projects.reduce((sum, p) => sum + Math.max(0, p.lockedFxrp - p.releasedFxrp), 0);
-  const released = projects.reduce((sum, p) => sum + p.releasedFxrp, 0);
+  const liveProjects = projects.filter((project) => project.source === "live");
+  const previewProjects = projects.filter((project) => project.source !== "live");
+  const active = liveProjects.filter((project) => project.status === "funded");
+  const protectedFxrp = liveProjects.reduce((sum, project) => sum + Math.max(0, project.lockedFxrp - project.releasedFxrp), 0);
+  const released = liveProjects.reduce((sum, project) => sum + project.releasedFxrp, 0);
+  const completedCount = liveProjects.filter((project) => project.status === "completed").length;
 
   return (
     <>
@@ -218,20 +228,26 @@ function Dashboard({
       </section>
 
       <section className="stats-grid">
-        <StatCard label="Active escrows" value={String(active.length)} detail="Across two contractors" icon={ShieldCheck} />
-        <StatCard label="Value protected" value={fxrp(protectedFxrp)} detail="Locked in project escrows" icon={WalletCards} accent="blue" />
-        <StatCard label="Released to date" value={fxrp(released)} detail="Verified milestone payments" icon={HandCoins} accent="amber" />
+        <StatCard label="Onchain projects" value={String(liveProjects.length)} detail={`${completedCount} completed · ${active.length} funded`} icon={ShieldCheck} loading={liveLoading} />
+        <StatCard label="FXRP protected" value={fxrp(protectedFxrp)} detail="Current deployed escrow balance" icon={WalletCards} accent="blue" loading={liveLoading} />
+        <StatCard label="FXRP released" value={fxrp(released)} detail="Verified contractor payments" icon={HandCoins} accent="amber" loading={liveLoading} />
         <StatCard label="Live XRP price" value={snapshot ? `$${snapshot.xrpUsdPrice.toFixed(4)}` : "—"} detail="Secured by FTSOv2" icon={Activity} accent="violet" loading={loadingNetwork && !snapshot} />
       </section>
 
       <section className="dashboard-grid">
         <div className="projects-panel">
           <div className="section-heading">
-            <div><h2>Projects</h2><span>{projects.length} total</span></div>
-            <div className="project-tabs"><button className="active">Active</button><button>All projects</button></div>
+            <div><h2>Live on Coston2</h2><span>{liveProjects.length} verified project{liveProjects.length === 1 ? "" : "s"}</span></div>
+            <a className="section-proof-link" href={`${COSTON2_EXPLORER}/address/${deployment.milestoneEscrow}`} target="_blank" rel="noreferrer">Escrow contract <ExternalLink size={12} /></a>
           </div>
           <div className="project-list">
-            {projects.map((project) => <ProjectCard key={project.id} project={project} onOpen={() => onOpenProject(project)} />)}
+            {liveLoading && <div className="live-loading"><LoaderCircle size={16} className="spinning" /> Reading deployed escrow…</div>}
+            {!liveLoading && liveProjects.length === 0 && <div className="live-loading">No live project has been created yet.</div>}
+            {liveProjects.map((project) => <ProjectCard key={`live-${project.id}`} project={project} onOpen={() => onOpenProject(project)} />)}
+          </div>
+          <div className="preview-divider"><span>PRODUCT EXPERIENCE PREVIEWS</span><i /></div>
+          <div className="project-list preview-projects">
+            {previewProjects.map((project) => <ProjectCard key={`preview-${project.id}`} project={project} onOpen={() => onOpenProject(project)} />)}
           </div>
         </div>
         <aside>
@@ -258,9 +274,17 @@ function ProjectDetail({ project, onBack }: { project: Project; onBack: () => vo
       <section className="project-hero">
         <div className="project-hero-copy">
           <div className="title-row"><div className="project-symbol large"><BriefcaseBusiness size={24} /></div><div><span>{project.category}</span><h1>{project.title}</h1></div></div>
-          <div className="hero-meta"><StatusPill status={project.status} /><span><Clock3 size={14} /> Due {project.due}</span><span>Project #{String(project.id).padStart(3, "0")}</span></div>
+          <div className="hero-meta"><StatusPill status={project.status} /><span><Clock3 size={14} /> {project.source === "live" ? project.due : `Due ${project.due}`}</span><span>Project #{String(project.id).padStart(3, "0")}</span></div>
         </div>
-        <div className="project-actions"><button className="secondary-button"><ReceiptText size={16} /> View receipt</button><button className="primary-button"><Send size={16} /> Invite contractor</button></div>
+        <div className="project-actions">
+          {project.source === "live" ? <>
+            <a className="secondary-button" href={project.proof?.released ? `${COSTON2_EXPLORER}/tx/${project.proof.released}` : `${COSTON2_EXPLORER}/address/${deployment.milestoneEscrow}`} target="_blank" rel="noreferrer"><ReceiptText size={16} /> Final receipt</a>
+            <a className="primary-button" href="/lifecycle.html"><ShieldCheck size={16} /> Lifecycle proof</a>
+          </> : <>
+            <button className="secondary-button"><ReceiptText size={16} /> View preview</button>
+            <button className="primary-button"><Send size={16} /> Invite contractor</button>
+          </>}
+        </div>
       </section>
 
       <section className="project-overview-grid">
@@ -356,6 +380,7 @@ function CreateProject({
       lockedFxrp: estimatedFxrp,
       releasedFxrp: 0,
       status: "created",
+      source: "demo",
       due: new Date(`${due}T00:00:00`).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
       milestones: milestones.map((item, index) => ({
         id: index,
@@ -432,6 +457,8 @@ function SettingsView({ snapshot }: { snapshot: NetworkSnapshot | null }) {
 export default function App() {
   const [view, setView] = useState<View>("dashboard");
   const [projects, setProjects] = useState<Project[]>(demoProjects);
+  const [liveProjects, setLiveProjects] = useState<Project[]>([]);
+  const [liveLoading, setLiveLoading] = useState(true);
   const [selected, setSelected] = useState<Project>(demoProjects[0]);
   const [snapshot, setSnapshot] = useState<NetworkSnapshot | null>(null);
   const [networkLoading, setNetworkLoading] = useState(true);
@@ -458,6 +485,24 @@ export default function App() {
 
   useEffect(() => { void refreshNetwork(); }, []);
 
+  useEffect(() => {
+    let active = true;
+    setLiveLoading(true);
+    getLiveProjects()
+      .then((result) => {
+        if (!active) return;
+        setLiveProjects(result);
+        if (result[0]) setSelected(result[0]);
+      })
+      .catch(() => {
+        if (active) setLiveProjects([]);
+      })
+      .finally(() => {
+        if (active) setLiveLoading(false);
+      });
+    return () => { active = false; };
+  }, []);
+
   const handleWallet = async () => {
     setWalletBusy(true);
     setWalletError("");
@@ -476,6 +521,11 @@ export default function App() {
   const openProject = (project: Project) => { setSelected(project); setView("project"); window.scrollTo({ top: 0, behavior: "smooth" }); };
   const changeView = (next: View) => { setView(next); setMobileNav(false); window.scrollTo({ top: 0, behavior: "smooth" }); };
 
+  const visibleProjects = useMemo(
+    () => [...liveProjects, ...projects],
+    [liveProjects, projects],
+  );
+
   const navItems = useMemo(() => [
     { id: "dashboard" as View, label: "Overview", icon: LayoutDashboard },
     { id: "activity" as View, label: "Activity", icon: Activity },
@@ -486,7 +536,7 @@ export default function App() {
     <div className="app-shell">
       <aside className={`sidebar ${mobileNav ? "open" : ""}`}>
         <div className="sidebar-head"><Logo /><button className="mobile-close" onClick={() => setMobileNav(false)}><X size={20} /></button></div>
-        <nav>{navItems.map(({ id, label, icon: Icon }) => <button key={id} className={view === id || (id === "dashboard" && view === "project") ? "active" : ""} onClick={() => changeView(id)}><Icon size={18} /><span>{label}</span></button>)}<span className="nav-label">PROJECTS</span>{projects.slice(0, 3).map((project) => <button className={view === "project" && selected.id === project.id ? "active project-nav" : "project-nav"} key={project.id} onClick={() => openProject(project)}><span className={`project-dot project-dot-${project.status}`} /><span>{project.title}</span></button>)}</nav>
+        <nav>{navItems.map(({ id, label, icon: Icon }) => <button key={id} className={view === id || (id === "dashboard" && view === "project") ? "active" : ""} onClick={() => changeView(id)}><Icon size={18} /><span>{label}</span></button>)}<span className="nav-label">PROJECTS</span>{visibleProjects.slice(0, 3).map((project) => <button className={view === "project" && selected.id === project.id ? "active project-nav" : "project-nav"} key={project.id} onClick={() => openProject(project)}><span className={`project-dot project-dot-${project.status}`} /><span>{project.title}</span></button>)}</nav>
         <div className="sidebar-bottom"><div className="build-card"><span><Zap size={15} /> HACKATHON BUILD</span><strong>10 days to signal</strong><p>Core contracts ready. Product experience in progress.</p><div><i style={{ width: "38%" }} /></div></div><button className="support-link"><Info size={17} /> Documentation<ExternalLink size={13} /></button></div>
       </aside>
 
@@ -496,7 +546,7 @@ export default function App() {
         <header className="topbar"><button className="mobile-menu" onClick={() => setMobileNav(true)}><Menu size={21} /></button><div className="topbar-search"><Search size={17} /><span>Search projects, addresses, or proofs</span><kbd>⌘ K</kbd></div><div className="topbar-actions"><div className={`network-badge ${networkError ? "network-error" : ""}`}><span />{networkError ? "RPC retrying" : "Coston2 live"}</div><button className="icon-button"><Bell size={18} /><i /></button>{wallet ? <button className="wallet-button connected" onClick={() => copyText(wallet)}><span className="wallet-avatar">H</span><p><strong>{shortAddress(wallet)}</strong><small>{walletBalance === null ? "Balance loading" : `${walletBalance.toFixed(2)} FXRP`}</small></p><ChevronDown size={14} /></button> : <button className="wallet-button" onClick={handleWallet} disabled={walletBusy}><WalletCards size={17} /><span>{walletBusy ? "Connecting…" : "Connect wallet"}</span></button>}</div></header>
         {walletError && <div className="toast-error"><Unplug size={16} /><span>{walletError}</span><button onClick={() => setWalletError("")}><X size={15} /></button></div>}
         <main>
-          {view === "dashboard" && <Dashboard projects={projects} snapshot={snapshot} loadingNetwork={networkLoading} onRefreshNetwork={refreshNetwork} onOpenProject={openProject} onCreate={() => changeView("create")} />}
+          {view === "dashboard" && <Dashboard projects={visibleProjects} snapshot={snapshot} loadingNetwork={networkLoading} liveLoading={liveLoading} onRefreshNetwork={refreshNetwork} onOpenProject={openProject} onCreate={() => changeView("create")} />}
           {view === "project" && <ProjectDetail project={selected} onBack={() => changeView("dashboard")} />}
           {view === "create" && <CreateProject xrpPrice={snapshot?.xrpUsdPrice ?? 1.07} onCancel={() => changeView("dashboard")} onCreated={(project) => { setProjects((current) => [project, ...current]); openProject(project); }} />}
           {view === "activity" && <ActivityView />}
