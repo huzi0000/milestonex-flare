@@ -43,7 +43,10 @@ MilestoneX turns FXRP into programmable project escrow while using Flare's decen
 - EIP-712 funding forwarder implemented with nonce, deadline, signer, and replay protection
 - Six automated contract tests passing
 - Safe Coston2 deployment script prepared
-- Testnet deployment and web application in progress
+- Responsive React/Vite application shell implemented
+- Live read-only Coston2 block, FXRP, wallet-balance, and FTSOv2 price integration implemented
+- Interactive project dashboard, project audit view, milestone workflow, activity view, and project-creation flow implemented
+- Testnet contract deployment and write integration in progress
 
 See [`TECHNICAL_SPIKE.md`](./TECHNICAL_SPIKE.md) for the verified addresses and initial feasibility results.
 
@@ -52,6 +55,7 @@ See [`TECHNICAL_SPIKE.md`](./TECHNICAL_SPIKE.md) for the verified addresses and 
 ```text
 milestonex-flare/
 ├── contracts/                 # Solidity contracts, Hardhat scripts and tests
+├── web/                       # Responsive React/Vite application
 ├── EXECUTION_PLAN.md          # Internal delivery timeline
 ├── TECHNICAL_SPIKE.md         # Coston2 feasibility evidence
 ├── LICENSE
@@ -74,6 +78,22 @@ npx hardhat run scripts/check-coston2.ts --network coston2
 ```
 
 This check does not need a private key.
+
+## Web application
+
+```bash
+cd web
+npm install
+npm run dev
+```
+
+Production validation:
+
+```bash
+npm run build
+```
+
+The current UI reads public Coston2 and FTSOv2 data directly. Contract-write actions remain clearly marked as prototype/demo behavior until the deployment manifest is available.
 
 ## Security
 
