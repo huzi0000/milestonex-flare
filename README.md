@@ -32,7 +32,7 @@ MilestoneX turns FXRP into programmable project escrow while using Flare's decen
 - **FXRP:** XRP becomes programmable inside milestone escrow rather than serving as a simple wallet balance.
 - **FTSOv2:** The XRP/USD feed prices USD-denominated milestones without a centralized price API.
 - **Coston2:** Contracts and the complete lifecycle run against Flare's public testnet.
-- **Gas-abstraction pattern:** EIP-712 authorization and relayer support are being evaluated for a lower-friction payment experience.
+- **Gas-abstraction pattern:** An EIP-712 funding forwarder lets a relayer submit a client-signed funding authorization after the client's one-time FXRP approval.
 
 ## Current technical status
 
@@ -40,7 +40,9 @@ MilestoneX turns FXRP into programmable project escrow while using Flare's decen
 - FXRP Asset Manager and test FXRP resolved through Flare Contract Registry
 - XRP/USD FTSOv2 feed read successfully
 - Initial escrow contract implemented
-- Five initial contract tests passing
+- EIP-712 funding forwarder implemented with nonce, deadline, signer, and replay protection
+- Six automated contract tests passing
+- Safe Coston2 deployment script prepared
 - Testnet deployment and web application in progress
 
 See [`TECHNICAL_SPIKE.md`](./TECHNICAL_SPIKE.md) for the verified addresses and initial feasibility results.

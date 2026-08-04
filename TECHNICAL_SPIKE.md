@@ -46,6 +46,8 @@ The initial `MilestoneEscrow` prototype now supports:
 - Final remainder handling so rounding dust cannot become trapped
 - Mutual cancellation approval
 - Refund of unreleased funds
+- EIP-712 relayed funding after one-time FXRP approval
+- Per-client nonces, authorization deadlines, signer verification, and replay protection
 - Access control, status checks, reentrancy protection, and SafeERC20 transfers
 
 ## Automated test result
@@ -55,10 +57,11 @@ MilestoneEscrow
   ✔ quotes USD cents into six-decimal FXRP using the oracle
   ✔ funds and releases a complete project milestone by milestone
   ✔ protects the client from quote slippage
+  ✔ funds through an EIP-712 authorization without the client sending the funding transaction
   ✔ requires sequential evidence and client-authorized release
   ✔ refunds unreleased funds only after both parties approve cancellation
 
-5 passing
+6 passing
 ```
 
 The project compiled 112 Solidity files successfully with Solidity 0.8.25 and the Cancun EVM target.
@@ -66,7 +69,9 @@ The project compiled 112 Solidity files successfully with Solidity 0.8.25 and th
 ## Files created
 
 - `contracts/contracts/MilestoneEscrow.sol`
+- `contracts/contracts/MilestoneFundingForwarder.sol`
 - `contracts/contracts/FtsoXrpUsdOracle.sol`
+- `contracts/contracts/interfaces/IMilestoneFunding.sol`
 - `contracts/contracts/interfaces/IXrpUsdOracle.sol`
 - `contracts/contracts/test/MockFxrp.sol`
 - `contracts/contracts/test/MockXrpUsdOracle.sol`
@@ -76,9 +81,9 @@ The project compiled 112 Solidity files successfully with Solidity 0.8.25 and th
 
 ## Remaining feasibility gates
 
-- [ ] Compile and test the EIP-712 gas-abstraction forwarder
-- [ ] Add the Coston2 deployment script without committing any private key
-- [ ] Deploy the FTSO adapter and escrow from the entrant's dedicated test wallet
+- [x] Compile and test the EIP-712 gas-abstraction forwarder
+- [x] Add the Coston2 deployment script without committing any private key
+- [ ] Deploy the FTSO adapter, forwarder, and escrow from the entrant's dedicated test wallet
 - [ ] Approve test FXRP and fund one test project
 - [ ] Release one milestone on Coston2
 - [ ] Record contract addresses and transaction hashes

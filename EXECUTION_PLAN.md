@@ -16,8 +16,8 @@
 - [x] FXRP contract resolved through Flare Contract Registry
 - [x] XRP/USD FTSOv2 feed read successfully
 - [x] Initial escrow contract compiled
-- [x] Five initial contract tests pass
-- [ ] Initial code pushed to public repository
+- [x] Six contract tests pass, including EIP-712 relayed funding
+- [x] Initial code pushed to public repository
 
 ## Day 1 — August 5: contract foundation
 

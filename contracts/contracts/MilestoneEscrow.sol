@@ -46,6 +46,7 @@ contract MilestoneEscrow is ReentrancyGuard {
 
     IERC20 public immutable fxrp;
     IXrpUsdOracle public immutable xrpUsdOracle;
+    address public immutable trustedForwarder;
     uint8 public immutable fxrpDecimals;
     uint256 public nextProjectId = 1;
 
@@ -92,12 +93,17 @@ contract MilestoneEscrow is ReentrancyGuard {
     event ProjectCancelled(uint256 indexed projectId, uint256 refundedFxrp);
     event ProjectCompleted(uint256 indexed projectId);
 
-    constructor(address fxrpToken, address oracle) {
-        if (fxrpToken == address(0) || oracle == address(0)) {
+    constructor(address fxrpToken, address oracle, address forwarder) {
+        if (
+            fxrpToken == address(0) ||
+            oracle == address(0) ||
+            forwarder == address(0)
+        ) {
             revert InvalidAddress();
         }
         fxrp = IERC20(fxrpToken);
         xrpUsdOracle = IXrpUsdOracle(oracle);
+        trustedForwarder = forwarder;
         fxrpDecimals = IERC20Metadata(fxrpToken).decimals();
     }
 
@@ -171,9 +177,27 @@ contract MilestoneEscrow is ReentrancyGuard {
         uint256 projectId,
         uint256 maximumFxrpAmount
     ) external nonReentrant returns (uint256 fundedAmount) {
+        return _fundProject(projectId, msg.sender, maximumFxrpAmount);
+    }
+
+    /// @notice Trusted EIP-712 forwarder entry point for relayed funding.
+    function fundProjectFor(
+        uint256 projectId,
+        address client,
+        uint256 maximumFxrpAmount
+    ) external nonReentrant returns (uint256 fundedAmount) {
+        if (msg.sender != trustedForwarder) revert Unauthorized();
+        return _fundProject(projectId, client, maximumFxrpAmount);
+    }
+
+    function _fundProject(
+        uint256 projectId,
+        address client,
+        uint256 maximumFxrpAmount
+    ) internal returns (uint256 fundedAmount) {
         Project storage project = projects[projectId];
         if (project.status != ProjectStatus.Created) revert InvalidStatus();
-        if (msg.sender != project.client) revert Unauthorized();
+        if (client != project.client) revert Unauthorized();
 
         uint256 priceWei;
         (fundedAmount, priceWei) = quoteUsdCents(project.totalUsdCents);
@@ -184,7 +208,7 @@ contract MilestoneEscrow is ReentrancyGuard {
 
         project.fundedFxrp = uint128(fundedAmount);
         project.status = ProjectStatus.Funded;
-        fxrp.safeTransferFrom(msg.sender, address(this), fundedAmount);
+        fxrp.safeTransferFrom(client, address(this), fundedAmount);
 
         emit ProjectFunded(projectId, fundedAmount, priceWei);
     }
