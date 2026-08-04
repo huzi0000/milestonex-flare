@@ -95,6 +95,23 @@ npm run build
 
 The current UI reads public Coston2 and FTSOv2 data directly. Contract-write actions remain clearly marked as prototype/demo behavior until the deployment manifest is available.
 
+### Browser deployment console
+
+After deploying the `web/` directory, open:
+
+```text
+/deploy.html
+```
+
+The console deploys the FTSOv2 adapter, EIP-712 forwarder, and escrow sequentially through MetaMask on Coston2. It refuses other chain IDs, verifies deployed bytecode, and exports a public `coston2.json` manifest. The deployment page never requests or receives a private key.
+
+Contract artifacts for the console are generated from Hardhat outputs:
+
+```bash
+cd contracts
+npm run export:web
+```
+
 ## Security
 
 - Never commit `.env` files, private keys, seed phrases, or API credentials.

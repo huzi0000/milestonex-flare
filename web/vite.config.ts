@@ -11,4 +11,12 @@ export default defineConfig({
     host: "0.0.0.0",
     allowedHosts: true,
   },
+  build: {
+    rollupOptions: {
+      input: {
+        main: new URL("./index.html", import.meta.url).pathname,
+        deploy: new URL("./deploy.html", import.meta.url).pathname,
+      },
+    },
+  },
 });

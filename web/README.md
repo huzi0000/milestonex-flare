@@ -14,6 +14,8 @@ Responsive React/Vite interface for the MilestoneX Coston2 prototype.
 - Three-step project builder with live FXRP estimates
 - Activity and network views
 - Explicit prototype labeling for actions that are not yet wired to deployed contracts
+- Dedicated `/deploy.html` Coston2 deployment console using injected MetaMask signing
+- Sequential bytecode-verified deployment and downloadable public manifest
 
 ## Run
 
