@@ -1,6 +1,6 @@
 /* Flare-inspired product storytelling — original MilestoneX implementation */
 :root {
-  --flow-green-strong: #2fd48a;
+  --flow-green-strong: var(--brand-accent);
   --flow-green-soft: #72e8b1;
   --flow-green-pale: #a6f2d0;
 }

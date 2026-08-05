@@ -163,7 +163,7 @@ Responsive and visual QA evidence is documented in [`web/RESPONSIVE_AUDIT.md`](.
 
 ## Visual system
 
-The interface includes persistent dark/light themes, the shared **Milestone Rise** identity, reduced-motion support, an original green-only 3D escrow visual, and a responsive animated explanation of the complete Agree → Lock → Prove → Release flow. Flare ecosystem marks are used only for technology identification and are documented in [`ATTRIBUTIONS.md`](./ATTRIBUTIONS.md).
+The interface includes persistent dark/light themes, the shared **Milestone Rise** identity, reduced-motion support, an original green-only 3D escrow visual, and a responsive animated explanation of the complete Agree → Lock → Prove → Release flow. The palette and verified contrast ratios are documented in [`docs/COLOR_SYSTEM.md`](./docs/COLOR_SYSTEM.md). Flare ecosystem references are documented in [`ATTRIBUTIONS.md`](./ATTRIBUTIONS.md).
 
 ## Security
 
