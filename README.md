@@ -45,7 +45,7 @@ MilestoneX turns FXRP into programmable project escrow while using Flare's decen
 - XRP/USD FTSOv2 feed read successfully
 - Initial escrow contract implemented
 - EIP-712 funding forwarder implemented with nonce, deadline, signer, and replay protection
-- Six automated contract tests passing
+- Eighteen automated core, security, signature, rounding, cancellation, and accounting-invariant tests passing
 - Safe Coston2 deployment script prepared
 - Responsive React/Vite application shell implemented
 - Live read-only Coston2 block, FXRP, wallet-balance, and FTSOv2 price integration implemented
@@ -59,7 +59,7 @@ MilestoneX turns FXRP into programmable project escrow while using Flare's decen
 - Built-in 60-second Judge Mode covering problem, workflow, Flare integration, and live proof
 - Responsive QA passed in both themes at 320, 360, 390, 430, 768, 900, 1024, 1280, and 1440 px
 - Open Graph/Twitter social preview and final favicon assets included
-- Final security expansion, user validation, and submission assets in progress
+- Security expansion complete; genuine user validation and submission assets in progress
 
 See [`TECHNICAL_SPIKE.md`](./TECHNICAL_SPIKE.md) for the verified addresses and initial feasibility results.
 
@@ -67,7 +67,7 @@ See [`TECHNICAL_SPIKE.md`](./TECHNICAL_SPIKE.md) for the verified addresses and 
 
 ```text
 milestonex-flare/
-├── contracts/                 # Solidity contracts, Hardhat scripts and tests
+├── contracts/                 # Solidity contracts, 18 tests, security review, and scripts
 ├── web/                       # Responsive React/Vite application and local visuals
 ├── ATTRIBUTIONS.md            # Visual, Flare mark, and third-party attribution
 ├── EXECUTION_PLAN.md          # Internal delivery timeline
@@ -158,6 +158,8 @@ Responsive and visual QA evidence is documented in [`web/RESPONSIVE_AUDIT.md`](.
 The interface includes persistent dark/light themes, the shared **Milestone Rise** identity, reduced-motion support, an original green-only 3D escrow visual, and a responsive animated explanation of the complete Agree → Lock → Prove → Release flow. Flare ecosystem marks are used only for technology identification and are documented in [`ATTRIBUTIONS.md`](./ATTRIBUTIONS.md).
 
 ## Security
+
+The prototype threat model, 18-test matrix, accounting invariant, access-control analysis, and known limitations are documented in [`contracts/SECURITY_REVIEW.md`](./contracts/SECURITY_REVIEW.md).
 
 - Never commit `.env` files, private keys, seed phrases, or API credentials.
 - Use a dedicated Coston2-only development wallet containing no real assets.
