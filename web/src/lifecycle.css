@@ -99,6 +99,11 @@ button, input, textarea { font: inherit; color: inherit; }
 .life-summary > div span { color: var(--muted); font-size: 8px; }
 .life-summary > div strong { font-size: 8px; }
 .recover-button { width: 100%; margin-top: 10px; border: 1px solid var(--line); background: #fafcfb; border-radius: 7px; min-height: 31px; color: var(--green); font-size: 7px; cursor: pointer; }
+.life-faucet { margin-top: 8px; min-height: 48px; padding: 9px 10px; display: flex; align-items: center; gap: 8px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface-2); color: var(--green); text-decoration: none; }
+.life-faucet:hover { border-color: var(--line-strong); transform: translateY(-1px); }
+.life-faucet > span { flex: 1; min-width: 0; display: grid; gap: 2px; }
+.life-faucet strong { color: var(--ink); font-size: 8px; }
+.life-faucet small { color: var(--muted); font-size: 7px; }
 .life-roles > div:not(.life-aside-title) { display: flex; align-items: center; gap: 8px; padding: 9px 0; border-bottom: 1px solid var(--line); }
 .role-icon { width: 28px; height: 28px; border-radius: 8px; display: grid; place-items: center; font-size: 8px; font-weight: 850; }
 .role-icon.client { background: var(--deep); color: var(--mint); }

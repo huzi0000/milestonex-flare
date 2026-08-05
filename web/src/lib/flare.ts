@@ -11,6 +11,7 @@ import {
 
 export const COSTON2_CHAIN_ID = 114;
 export const COSTON2_EXPLORER = "https://coston2-explorer.flare.network";
+export const COSTON2_FAUCET = "https://faucet.flare.network/coston2";
 export const COSTON2_RPC = "https://coston2-api.flare.network/ext/C/rpc";
 export const FLARE_REGISTRY = "0xaD67FE66660Fb8dFE9d6b1b4240d8650e30F6019" as Address;
 export const XRP_USD_FEED_ID =

@@ -127,7 +127,7 @@ Production validation:
 npm run build
 ```
 
-The current UI reads public Coston2 and FTSOv2 data directly. Contract-write actions remain clearly marked as prototype/demo behavior until the deployment manifest is available.
+The current UI reads public Coston2 and FTSOv2 data directly. The dedicated lifecycle console performs real testnet writes against the published deployment, while the main dashboard project builder is clearly labelled as a UI preview.
 
 ### Browser deployment console
 
@@ -148,7 +148,7 @@ npm run export:web
 
 ### Live lifecycle console
 
-Open `/lifecycle.html` to complete a real two-account testnet flow:
+Open `/lifecycle.html` to complete a real two-account testnet flow. If a dedicated test wallet needs gas or FXRP, use the [official Flare Coston2 faucet](https://faucet.flare.network/coston2); it provides free test assets only and is also linked directly inside the application.
 
 1. Connect the client wallet.
 2. Create a one-milestone project.

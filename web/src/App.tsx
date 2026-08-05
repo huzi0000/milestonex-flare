@@ -43,6 +43,7 @@ import {
 } from "lucide-react";
 import {
   COSTON2_EXPLORER,
+  COSTON2_FAUCET,
   connectWallet,
   ensureCoston2,
   getFxrpBalance,
@@ -588,7 +589,7 @@ export default function App() {
           {view === "activity" && <ActivityView />}
           {view === "settings" && <SettingsView snapshot={snapshot} />}
         </main>
-        <footer><BrandLogo /><span className="footer-flare"><span className="footer-flare-icon"><Blocks size={14} /></span><small>Built on Flare</small></span><p>Experimental Coston2 prototype. Never use real funds.</p><div><a href="https://github.com/huzi0000/milestonex-flare" target="_blank" rel="noreferrer">GitHub <ExternalLink size={12} /></a><a href={COSTON2_EXPLORER} target="_blank" rel="noreferrer">Explorer <ExternalLink size={12} /></a></div></footer>
+        <footer><BrandLogo /><span className="footer-flare"><span className="footer-flare-icon"><Blocks size={14} /></span><small>Built on Flare</small></span><p>Experimental Coston2 prototype. Never use real funds.</p><div><a href="https://github.com/huzi0000/milestonex-flare" target="_blank" rel="noreferrer">GitHub <ExternalLink size={12} /></a><a href={COSTON2_EXPLORER} target="_blank" rel="noreferrer">Explorer <ExternalLink size={12} /></a><a href={COSTON2_FAUCET} target="_blank" rel="noreferrer">Faucet <ExternalLink size={12} /></a></div></footer>
       </div>
       <JudgeTour open={judgeTourOpen} onClose={() => setJudgeTourOpen(false)} />
     </div>

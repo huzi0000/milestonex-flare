@@ -33,6 +33,7 @@ import {
 import {
   COSTON2_CHAIN_ID,
   COSTON2_EXPLORER,
+  COSTON2_FAUCET,
   connectWallet,
   coston2,
   ensureCoston2,
@@ -355,6 +356,7 @@ export default function DeployApp() {
             <article className="wallet-summary">
               <div className="aside-title"><WalletCards size={17} /><span>DEPLOYER WALLET</span>{(account || manifest) && <BadgeCheck size={16} />}</div>
               {manifest ? <><strong>{shortAddress(manifest.deployer)}</strong><p>Original Coston2 deployer</p><div className="wallet-meter"><span style={{ width: "100%" }} /></div><small>Public address only · deployment verified.</small></> : account ? <><strong>{shortAddress(account)}</strong><p>{Number(formatEther(balance)).toFixed(3)} C2FLR available</p><div className="wallet-meter"><span style={{ width: balance > 0n ? "82%" : "0%" }} /></div><small>Only free faucet tokens are used.</small></> : <div className="wallet-empty"><KeyRound size={24} /><p>Connect your dedicated test wallet to continue.</p></div>}
+              <a className="deploy-faucet" href={COSTON2_FAUCET} target="_blank" rel="noreferrer"><CircleDollarSign size={14} /><span><strong>Get Coston2 test tokens</strong><small>Official Flare faucet</small></span><ExternalLink size={13} /></a>
             </article>
 
             <article className="dependency-card">

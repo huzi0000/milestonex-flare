@@ -41,6 +41,7 @@ import { getVerifiedFallbackProjects, projectOneTransactions } from "./lib/miles
 import {
   COSTON2_CHAIN_ID,
   COSTON2_EXPLORER,
+  COSTON2_FAUCET,
   connectWallet,
   coston2,
   ensureCoston2,
@@ -456,6 +457,7 @@ export default function LifecycleApp() {
               <div><span>Released</span><strong>{formatFxrp(project?.releasedFxrp ?? 0n)}</strong></div>
               <div><span>Evidence</span><strong>{milestone?.submitted ? "Committed" : "Pending"}</strong></div>
               <button className="recover-button" onClick={recoverProject}>Recover an existing project ID</button>
+              <a className="life-faucet" href={COSTON2_FAUCET} target="_blank" rel="noreferrer"><CircleDollarSign size={14} /><span><strong>Get Coston2 test tokens</strong><small>Official Flare faucet · C2FLR and FXRP</small></span><ExternalLink size={13} /></a>
             </article>
 
             <article className="life-roles">
