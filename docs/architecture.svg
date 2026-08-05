@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">MilestoneX architecture on Flare Coston2</title>
+  <desc id="desc">Architecture showing client and contractor wallets, React web app, FTSOv2 pricing adapter, EIP-712 forwarder, FXRP milestone escrow, Flare contracts, and public proof outputs.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#04100b"/><stop offset="1" stop-color="#082017"/></linearGradient>
+    <linearGradient id="mint" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#9af2c9"/><stop offset="1" stop-color="#2fd48a"/></linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#000" flood-opacity=".28"/></filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 10 5 0 10Z" fill="#55e2a4"/></marker>
+    <style>
+      .title{font:800 42px Inter,Arial,sans-serif;fill:#f1faf5;letter-spacing:-1.7px}.subtitle{font:400 18px Inter,Arial,sans-serif;fill:#91a99d}.eyebrow{font:800 13px Inter,Arial,sans-serif;fill:#55e2a4;letter-spacing:2px}.card{fill:#0b1b14;stroke:#234838;stroke-width:2}.card2{fill:#0e251b;stroke:#2d6049;stroke-width:2}.node-title{font:750 20px Inter,Arial,sans-serif;fill:#f1faf5}.node-copy{font:400 14px Inter,Arial,sans-serif;fill:#91a99d}.tiny{font:700 11px Inter,Arial,sans-serif;fill:#65e4aa;letter-spacing:1px}.addr{font:400 11px ui-monospace,monospace;fill:#7f9d8e}.arrow{fill:none;stroke:#55e2a4;stroke-width:3;marker-end:url(#arrow)}.arrow-soft{fill:none;stroke:#39795a;stroke-width:2;stroke-dasharray:8 8;marker-end:url(#arrow)}.label{font:700 12px Inter,Arial,sans-serif;fill:#a8c7b7}.icon-bg{fill:#113526}.icon{fill:none;stroke:#62e5aa;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}.pill{fill:#102e22;stroke:#2e6b4e}.pill-text{font:750 12px Inter,Arial,sans-serif;fill:#7de9b5}
+    </style>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <circle cx="1380" cy="90" r="280" fill="#28d68b" opacity=".045"/>
+  <circle cx="160" cy="810" r="260" fill="#28d68b" opacity=".035"/>
+
+  <!-- Header -->
+  <g transform="translate(70 58)">
+    <path d="M0 36V24h12V12h12V0h20" fill="none" stroke="#55e2a4" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M35 -6h12V6" fill="none" stroke="#9af2c9" stroke-width="4" stroke-linecap="round"/>
+    <text x="64" y="18" class="eyebrow">MILESTONEX · FLARE SUMMER SIGNAL</text>
+    <text x="64" y="66" class="title">Programmable FXRP milestone escrow</text>
+    <text x="64" y="96" class="subtitle">Live FTSOv2 pricing · EIP-712 funding · Sequential delivery proof · Public Coston2 receipts</text>
+  </g>
+  <rect x="1250" y="58" width="280" height="48" rx="24" class="pill"/><circle cx="1275" cy="82" r="6" fill="#4de0a0"/><text x="1292" y="87" class="pill-text">DEPLOYED · CHAIN ID 114</text>
+
+  <!-- Users -->
+  <g filter="url(#shadow)">
+    <rect x="70" y="240" width="250" height="150" rx="24" class="card"/>
+    <circle cx="120" cy="290" r="26" class="icon-bg"/><path d="M108 296c6-14 18-14 24 0M120 284a9 9 0 1 0 0-18 9 9 0 0 0 0 18" class="icon"/>
+    <text x="160" y="280" class="tiny">ROLE 01</text><text x="160" y="308" class="node-title">Client wallet</text>
+    <text x="95" y="342" class="node-copy">Creates project · approves FXRP</text><text x="95" y="366" class="node-copy">Funds · reviews · releases</text>
+    <rect x="70" y="475" width="250" height="150" rx="24" class="card"/>
+    <circle cx="120" cy="525" r="26" class="icon-bg"/><path d="M108 531c6-14 18-14 24 0M120 519a9 9 0 1 0 0-18 9 9 0 0 0 0 18" class="icon"/>
+    <text x="160" y="515" class="tiny">ROLE 02</text><text x="160" y="543" class="node-title">Contractor wallet</text>
+    <text x="95" y="577" class="node-copy">Accepts project · delivers work</text><text x="95" y="601" class="node-copy">Commits evidence · receives FXRP</text>
+  </g>
+
+  <!-- Web application -->
+  <g filter="url(#shadow)">
+    <rect x="430" y="240" width="300" height="385" rx="28" class="card2"/>
+    <rect x="458" y="270" width="244" height="48" rx="14" fill="#07140f" stroke="#2a5a44"/>
+    <circle cx="482" cy="294" r="7" fill="#4ee0a0"/><text x="500" y="300" class="node-title" font-size="17">MilestoneX Web</text>
+    <text x="460" y="350" class="tiny">VERCEL · REACT · VIEM</text>
+    <g transform="translate(460 378)"><rect width="242" height="58" rx="15" fill="#102a20"/><circle cx="28" cy="29" r="16" class="icon-bg"/><path d="M20 29h16M28 21v16" class="icon"/><text x="55" y="25" class="node-title" font-size="15">Project builder</text><text x="55" y="44" class="node-copy" font-size="12">USD milestones + wallet roles</text></g>
+    <g transform="translate(460 450)"><rect width="242" height="58" rx="15" fill="#102a20"/><circle cx="28" cy="29" r="16" class="icon-bg"/><path d="M20 31h16M22 25h12" class="icon"/><text x="55" y="25" class="node-title" font-size="15">Wallet transaction UX</text><text x="55" y="44" class="node-copy" font-size="12">Coston2 guard + receipts</text></g>
+    <g transform="translate(460 522)"><rect width="242" height="75" rx="15" fill="#102a20"/><circle cx="28" cy="34" r="16" class="icon-bg"/><path d="m20 35 6 6 11-14" class="icon"/><text x="55" y="27" class="node-title" font-size="15">Verified fallback</text><text x="55" y="47" class="node-copy" font-size="12">Project #1 remains judgeable</text><text x="55" y="64" class="node-copy" font-size="12">during public RPC limits</text></g>
+  </g>
+
+  <!-- Core contracts cluster -->
+  <g filter="url(#shadow)">
+    <rect x="845" y="205" width="440" height="480" rx="32" fill="#091a13" stroke="#347052" stroke-width="2.5"/>
+    <text x="880" y="246" class="eyebrow">FLARE TESTNET COSTON2</text>
+    <text x="880" y="281" class="node-title" font-size="25">Deployed contract system</text>
+
+    <g transform="translate(880 320)"><rect width="370" height="92" rx="18" class="card2"/><circle cx="47" cy="46" r="25" class="icon-bg"/><path d="M35 47h24M39 40h16M39 54h16" class="icon"/><text x="87" y="34" class="tiny">PRICE ADAPTER</text><text x="87" y="60" class="node-title">FTSO XRP/USD oracle</text><text x="87" y="80" class="addr">0xb49f…2DB0</text></g>
+    <g transform="translate(880 432)"><rect width="370" height="92" rx="18" class="card2"/><circle cx="47" cy="46" r="25" class="icon-bg"/><path d="M37 50c0-14 20-14 20 0M42 42a5 5 0 1 0 10 0 5 5 0 0 0-10 0" class="icon"/><text x="87" y="34" class="tiny">EIP-712 AUTHORIZATION</text><text x="87" y="60" class="node-title">Funding forwarder</text><text x="87" y="80" class="addr">0xc8d3…6e92</text></g>
+    <g transform="translate(880 544)"><rect width="370" height="112" rx="18" fill="#113324" stroke="#42a271" stroke-width="2"/><circle cx="47" cy="52" r="25" fill="#194b35"/><path d="M35 48h24v18H35zM40 48v-7a7 7 0 0 1 14 0v7" class="icon"/><text x="87" y="32" class="tiny">CORE STATE MACHINE</text><text x="87" y="59" class="node-title">Milestone escrow</text><text x="87" y="80" class="node-copy">Create → Fund → Prove → Release</text><text x="87" y="100" class="addr">0xDfC5…78EE</text></g>
+  </g>
+
+  <!-- Flare native dependencies -->
+  <g filter="url(#shadow)">
+    <rect x="1370" y="240" width="170" height="385" rx="26" class="card"/>
+    <text x="1395" y="275" class="tiny">FLARE NATIVE</text>
+    <g transform="translate(1390 300)"><circle cx="28" cy="28" r="26" class="icon-bg"/><text x="28" y="33" text-anchor="middle" class="pill-text">FX</text><text x="0" y="78" class="node-title" font-size="16">Test FXRP</text><text x="0" y="98" class="node-copy" font-size="12">Programmable XRP</text></g>
+    <g transform="translate(1390 430)"><circle cx="28" cy="28" r="26" class="icon-bg"/><path d="M16 30h8l4-10 6 20 5-10h5" class="icon"/><text x="0" y="78" class="node-title" font-size="16">FTSOv2</text><text x="0" y="98" class="node-copy" font-size="12">Decentralized feed</text></g>
+    <g transform="translate(1390 560)"><circle cx="28" cy="28" r="26" class="icon-bg"/><path d="M18 20h8v8h-8zM31 20h8v8h-8zM18 33h8v8h-8zM31 33h8v8h-8z" class="icon"/><text x="0" y="78" class="node-title" font-size="16">Registry</text></g>
+  </g>
+
+  <!-- Arrows -->
+  <path d="M320 315H420" class="arrow"/><text x="340" y="300" class="label">connect + sign</text>
+  <path d="M320 550H420" class="arrow"/><text x="338" y="535" class="label">submit proof</text>
+  <path d="M730 360H835" class="arrow"/><text x="748" y="344" class="label">read / write</text>
+  <path d="M730 505H835" class="arrow"/><text x="752" y="490" class="label">EIP-712</text>
+  <path d="M1285 365H1360" class="arrow-soft"/><text x="1296" y="348" class="label">price</text>
+  <path d="M1285 555H1360" class="arrow-soft"/><text x="1295" y="540" class="label">FXRP</text>
+
+  <!-- Proof output -->
+  <g transform="translate(420 755)">
+    <rect width="765" height="92" rx="22" fill="#0d2b1f" stroke="#3d8a63" stroke-width="2"/>
+    <circle cx="48" cy="46" r="25" fill="#18543a"/><path d="m36 47 8 8 17-21" class="icon"/>
+    <text x="88" y="35" class="tiny">PUBLIC PROOF OUTPUT</text><text x="88" y="62" class="node-title">Events · transaction receipts · evidence hash · zero trapped balance</text>
+    <rect x="570" y="25" width="165" height="42" rx="21" class="pill"/><text x="595" y="51" class="pill-text">PROJECT #1 VERIFIED</text>
+  </g>
+  <path d="M1065 685v60" class="arrow"/>
+</svg>

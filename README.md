@@ -69,6 +69,8 @@ See [`TECHNICAL_SPIKE.md`](./TECHNICAL_SPIKE.md) for the verified addresses and 
 milestonex-flare/
 ├── contracts/                 # Solidity contracts, 18 tests, security review, and scripts
 ├── web/                       # Responsive React/Vite application and local visuals
+├── docs/                      # Architecture and submission visuals
+├── validation/                # Interview guide, outreach copy, and response template
 ├── ATTRIBUTIONS.md            # Visual, Flare mark, and third-party attribution
 ├── EXECUTION_PLAN.md          # Internal delivery timeline
 ├── TECHNICAL_SPIKE.md         # Coston2 feasibility evidence
@@ -104,6 +106,12 @@ This check does not need a private key.
 See [`DEPLOYMENT_VERIFICATION.md`](./DEPLOYMENT_VERIFICATION.md) and [`contracts/deployments/coston2-verification.json`](./contracts/deployments/coston2-verification.json) for independent receipt, bytecode, linkage, and oracle checks.
 
 The first real workflow is documented in [`PROJECT_1_VERIFICATION.md`](./PROJECT_1_VERIFICATION.md) with machine-readable evidence at [`contracts/deployments/project-1-verification.json`](./contracts/deployments/project-1-verification.json).
+
+## Architecture
+
+![MilestoneX architecture on Flare Coston2](./docs/architecture.svg)
+
+The diagram maps wallet roles, the React/Viem interface, FTSOv2 adapter, EIP-712 forwarder, milestone escrow, FXRP dependencies, and public proof outputs.
 
 ## Web application
 
