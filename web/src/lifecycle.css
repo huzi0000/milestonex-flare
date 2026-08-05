@@ -98,7 +98,11 @@ button, input, textarea { font: inherit; color: inherit; }
 .life-summary > div:not(.life-aside-title) { display: flex; justify-content: space-between; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--line); }
 .life-summary > div span { color: var(--muted); font-size: 8px; }
 .life-summary > div strong { font-size: 8px; }
-.recover-button { width: 100%; margin-top: 10px; border: 1px solid var(--line); background: #fafcfb; border-radius: 7px; min-height: 31px; color: var(--green); font-size: 7px; cursor: pointer; }
+.new-project-button { width: 100%; margin-top: 10px; min-height: 38px; padding: 0 10px; border: 1px solid var(--brand-accent); border-radius: 8px; background: var(--brand-accent); color: var(--button-ink); display: flex; align-items: center; gap: 7px; font-size: 8px; font-weight: 800; cursor: pointer; }
+.new-project-button span { flex: 1; text-align: left; }
+.new-project-button small { font-size: 7px; opacity: .75; }
+.new-project-button:disabled { opacity: .45; cursor: wait; }
+.recover-button { width: 100%; margin-top: 8px; border: 1px solid var(--line); background: #fafcfb; border-radius: 7px; min-height: 31px; color: var(--green); font-size: 7px; cursor: pointer; }
 .life-faucet { margin-top: 8px; min-height: 48px; padding: 9px 10px; display: flex; align-items: center; gap: 8px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface-2); color: var(--green); text-decoration: none; }
 .life-faucet:hover { border-color: var(--line-strong); transform: translateY(-1px); }
 .life-faucet > span { flex: 1; min-width: 0; display: grid; gap: 2px; }

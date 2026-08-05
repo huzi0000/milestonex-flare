@@ -123,7 +123,7 @@ export default function LifecycleApp() {
   const projectIdRef = useRef<bigint | null>(projectId);
 
   const usdCents = BigInt(Math.max(0, Math.round((Number(amount) || 0) * 100)));
-  const clientAddress = project?.client ?? (deployment.deployer as Address);
+  const clientAddress = project?.client ?? account ?? (deployment.deployer as Address);
   const contractorAddress = project?.contractor ?? (contractor as Address);
   const isClient = sameAddress(account, clientAddress);
   const isContractor = sameAddress(account, contractorAddress);
@@ -203,6 +203,11 @@ export default function LifecycleApp() {
           setQuotedFxrp((quote as readonly [bigint, bigint])[0]);
           setContractor(chainProject.contractor);
           setAmount((Number(chainProject.totalUsdCents) / 100).toFixed(2));
+        } else {
+          setProject(null);
+          setMilestone(null);
+          setAllowance(0n);
+          setQuotedFxrp(0n);
         }
       }
     } catch (caught) {
@@ -362,6 +367,22 @@ export default function LifecycleApp() {
     }));
   };
 
+  const startNewProject = () => {
+    const id = nextProjectId;
+    localStorage.setItem(STORAGE_PROJECT, id.toString());
+    setProjectId(id);
+    setProject(null);
+    setMilestone(null);
+    setAllowance(0n);
+    setQuotedFxrp(0n);
+    setContractor("");
+    setTitle("MilestoneX demo project");
+    setAmount("1");
+    setEvidence("MilestoneX delivery completed and verified on Coston2.");
+    setActivity([]);
+    setError("");
+  };
+
   const recoverProject = async () => {
     const candidate = window.prompt("Enter the Coston2 project ID", projectId?.toString() ?? "1");
     if (!candidate || !/^\d+$/.test(candidate)) return;
@@ -414,7 +435,7 @@ export default function LifecycleApp() {
             </article>}
             <article className={`life-card ${currentStep === 1 ? "focus" : ""}`}>
               <div className="life-card-head"><span><WalletCards size={18} /></span><div><p>STEP 01</p><h2>Connect the client wallet</h2></div>{account && <BadgeCheck size={18} />}</div>
-              <p className="life-description">Begin with the original account that deployed MilestoneX and holds test FXRP.</p>
+              <p className="life-description">Connect the Coston2 account that will act as the client and fund this project with test FXRP.</p>
               {account ? <div className="connected-wallet"><span className="wallet-letter">{isClient ? "C" : isContractor ? "W" : "?"}</span><p><strong>{shortAddress(account)}</strong><small>{isClient ? "Client account" : isContractor ? "Contractor account" : "Unknown account"}</small></p><div><strong>{formatFxrp(fxrpBalance)}</strong><small>{Number(formatEther(c2Balance)).toFixed(2)} C2FLR</small></div></div> : <button className="life-primary" onClick={connect} disabled={Boolean(busy)}>{buttonContent("connect", <WalletCards size={16} />, "Connect wallet")}</button>}
               {account && <button className="life-refresh" onClick={connect}><RefreshCw size={13} /> Refresh active MetaMask account</button>}
             </article>
@@ -456,6 +477,7 @@ export default function LifecycleApp() {
               <div><span>Escrowed</span><strong>{formatFxrp((project?.fundedFxrp ?? 0n) - (project?.releasedFxrp ?? 0n))}</strong></div>
               <div><span>Released</span><strong>{formatFxrp(project?.releasedFxrp ?? 0n)}</strong></div>
               <div><span>Evidence</span><strong>{milestone?.submitted ? "Committed" : "Pending"}</strong></div>
+              <button className="new-project-button" onClick={startNewProject} disabled={loading}><BriefcaseBusiness size={13} /><span>Start new test project</span><small>Next #{nextProjectId.toString()}</small></button>
               <button className="recover-button" onClick={recoverProject}>Recover an existing project ID</button>
               <a className="life-faucet" href={COSTON2_FAUCET} target="_blank" rel="noreferrer"><CircleDollarSign size={14} /><span><strong>Get Coston2 test tokens</strong><small>Official Flare faucet · C2FLR and FXRP</small></span><ExternalLink size={13} /></a>
             </article>

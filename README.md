@@ -21,7 +21,7 @@ Cross-border service work often begins with a trust problem:
 
 MilestoneX turns FXRP into programmable project escrow while using Flare's decentralized XRP/USD price feed to keep milestone values understandable.
 
-## Planned core flow
+## Core flow
 
 1. A client creates a project with one to twelve milestones priced in USD cents.
 2. FTSOv2 returns the current XRP/USD price.
@@ -46,20 +46,21 @@ MilestoneX turns FXRP into programmable project escrow while using Flare's decen
 - Initial escrow contract implemented
 - EIP-712 funding forwarder implemented with nonce, deadline, signer, and replay protection
 - Eighteen automated core, security, signature, rounding, cancellation, and accounting-invariant tests passing
-- Safe Coston2 deployment script prepared
+- Safe Coston2 deployment scripts executed and retained for reproducibility
 - Responsive React/Vite application shell implemented
 - Live read-only Coston2 block, FXRP, wallet-balance, and FTSOv2 price integration implemented
 - Interactive project dashboard, project audit view, milestone workflow, activity view, and project-creation flow implemented
 - Oracle adapter, EIP-712 forwarder, and milestone escrow deployed and independently verified on Coston2
 - Guided two-account lifecycle console implemented for real create, approve, fund, evidence, and release transactions
 - Project #1 completed end-to-end on Coston2 with `4.663805 FXRP` funded and released
-- Full lifecycle events, FXRP transfer, accounting, evidence hash, and zero remaining escrow balance independently verified
+- Project #2 repeated the complete lifecycle with `0.469552 FXRP` funded and released
+- Both lifecycle event sets, FXRP transfers, accounting, evidence hashes, and zero remaining escrow balances independently verified
 - Unified milestone-route brand identity shared across dashboard, deployment, lifecycle, project, activity, and network views
 - Persistent dark/light themes, system-preference detection, reduced-motion support, and purposeful interface animation
 - Built-in 60-second Judge Mode covering problem, workflow, Flare integration, and live proof
 - Responsive QA passed in both themes at 320, 360, 390, 430, 768, 900, 1024, 1280, and 1440 px
 - Open Graph/Twitter social preview and final favicon assets included
-- Security expansion complete; genuine user validation and submission assets in progress
+- Security expansion and technical evidence complete; final demo and submission assets in progress
 
 See [`TECHNICAL_SPIKE.md`](./TECHNICAL_SPIKE.md) for the verified addresses and initial feasibility results.
 
@@ -70,7 +71,7 @@ milestonex-flare/
 ├── contracts/                 # Solidity contracts, 18 tests, security review, and scripts
 ├── web/                       # Responsive React/Vite application and local visuals
 ├── docs/                      # Architecture and submission visuals
-├── validation/                # Interview guide, outreach copy, and response template
+├── validation/                # Optional future research toolkit; no completed interviews claimed
 ├── ATTRIBUTIONS.md            # Visual, Flare mark, and third-party attribution
 ├── EXECUTION_PLAN.md          # Internal delivery timeline
 ├── TECHNICAL_SPIKE.md         # Coston2 feasibility evidence
@@ -105,7 +106,7 @@ This check does not need a private key.
 
 See [`DEPLOYMENT_VERIFICATION.md`](./DEPLOYMENT_VERIFICATION.md) and [`contracts/deployments/coston2-verification.json`](./contracts/deployments/coston2-verification.json) for independent receipt, bytecode, linkage, and oracle checks.
 
-The first real workflow is documented in [`PROJECT_1_VERIFICATION.md`](./PROJECT_1_VERIFICATION.md) with machine-readable evidence at [`contracts/deployments/project-1-verification.json`](./contracts/deployments/project-1-verification.json).
+The first real workflow is documented in [`PROJECT_1_VERIFICATION.md`](./PROJECT_1_VERIFICATION.md) with machine-readable evidence at [`contracts/deployments/project-1-verification.json`](./contracts/deployments/project-1-verification.json). Repeatability is documented in [`PROJECT_2_VERIFICATION.md`](./PROJECT_2_VERIFICATION.md) with machine-readable evidence at [`contracts/deployments/project-2-verification.json`](./contracts/deployments/project-2-verification.json).
 
 ## Architecture
 
@@ -148,7 +149,7 @@ npm run export:web
 
 ### Live lifecycle console
 
-Open `/lifecycle.html` to complete a real two-account testnet flow. If a dedicated test wallet needs gas or FXRP, use the [official Flare Coston2 faucet](https://faucet.flare.network/coston2); it provides free test assets only and is also linked directly inside the application.
+Open `/lifecycle.html` to complete a real two-account testnet flow. Any funded Coston2 account can act as the client, and the console exposes a **Start new test project** control for repeatable testing. If a dedicated test wallet needs gas or FXRP, use the [official Flare Coston2 faucet](https://faucet.flare.network/coston2); it provides free test assets only and is also linked directly inside the application.
 
 1. Connect the client wallet.
 2. Create a one-milestone project.
