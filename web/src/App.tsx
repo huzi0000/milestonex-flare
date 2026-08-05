@@ -47,11 +47,12 @@ import {
   ensureCoston2,
   getFxrpBalance,
   getNetworkSnapshot,
+  verifiedNetworkFallback,
   shortAddress,
   type NetworkSnapshot,
 } from "./lib/flare";
 import { demoProjects, fxrp, money, type Project } from "./lib/data";
-import { getLiveProjects } from "./lib/milestonex";
+import { getLiveProjects, getVerifiedFallbackProjects } from "./lib/milestonex";
 import { deployment } from "./generated/deployment";
 import BrandLogo from "./components/BrandLogo";
 import ThemeToggle from "./components/ThemeToggle";
@@ -128,7 +129,7 @@ function NetworkCard({
     <article className="network-card">
       <div className="network-topline">
         <div>
-          <span className="eyebrow"><span className="pulse-dot" />LIVE NETWORK</span>
+          <span className="eyebrow"><span className="pulse-dot" />{snapshot?.source === "verified-fallback" ? "VERIFIED SNAPSHOT" : "LIVE NETWORK"}</span>
           <h3>Proof, not promises.</h3>
         </div>
         <button className="icon-button small" onClick={onRefresh} disabled={loading} aria-label="Refresh network data">
@@ -509,6 +510,7 @@ export default function App() {
       if (wallet) setWalletBalance(await getFxrpBalance(wallet as `0x${string}`, result));
     } catch (error) {
       setNetworkError(error instanceof Error ? error.message : "Coston2 data is temporarily unavailable.");
+      setSnapshot((current) => current ?? verifiedNetworkFallback);
     } finally {
       setNetworkLoading(false);
     }
@@ -526,7 +528,7 @@ export default function App() {
         if (result[0]) setSelected(result[0]);
       })
       .catch(() => {
-        if (active) setLiveProjects([]);
+        if (active) setLiveProjects(getVerifiedFallbackProjects());
       })
       .finally(() => {
         if (active) setLiveLoading(false);
@@ -575,7 +577,7 @@ export default function App() {
       {mobileNav && <button className="sidebar-backdrop" onClick={() => setMobileNav(false)} aria-label="Close navigation" />}
 
       <div className="main-column">
-        <header className="topbar"><button className="mobile-menu" onClick={() => setMobileNav(true)} aria-label="Open navigation"><Menu size={21} /></button><a className="mobile-top-brand" href="/"><BrandLogo /></a><div className="topbar-search"><Search size={17} /><span>Search projects, addresses, or proofs</span><kbd>⌘ K</kbd></div><div className="topbar-actions"><ThemeToggle compact /><div className={`network-badge ${networkError ? "network-error" : ""}`}><span />{networkError ? "RPC retrying" : "Coston2 live"}</div><button className="icon-button"><Bell size={18} /><i /></button>{wallet ? <button className="wallet-button connected" onClick={() => copyText(wallet)}><span className="wallet-avatar">H</span><p><strong>{shortAddress(wallet)}</strong><small>{walletBalance === null ? "Balance loading" : `${walletBalance.toFixed(2)} FXRP`}</small></p><ChevronDown size={14} /></button> : <button className="wallet-button" onClick={handleWallet} disabled={walletBusy}><WalletCards size={17} /><span>{walletBusy ? "Connecting…" : "Connect wallet"}</span></button>}</div></header>
+        <header className="topbar"><button className="mobile-menu" onClick={() => setMobileNav(true)} aria-label="Open navigation"><Menu size={21} /></button><a className="mobile-top-brand" href="/"><BrandLogo /></a><div className="topbar-search"><Search size={17} /><span>Search projects, addresses, or proofs</span><kbd>⌘ K</kbd></div><div className="topbar-actions"><ThemeToggle /><div className={`network-badge ${networkError ? "network-error" : ""}`}><span />{networkError ? "RPC retrying" : "Coston2 live"}</div><button className="icon-button"><Bell size={18} /><i /></button>{wallet ? <button className="wallet-button connected" onClick={() => copyText(wallet)}><span className="wallet-avatar">H</span><p><strong>{shortAddress(wallet)}</strong><small>{walletBalance === null ? "Balance loading" : `${walletBalance.toFixed(2)} FXRP`}</small></p><ChevronDown size={14} /></button> : <button className="wallet-button" onClick={handleWallet} disabled={walletBusy}><WalletCards size={17} /><span>{walletBusy ? "Connecting…" : "Connect wallet"}</span></button>}</div></header>
         {walletError && <div className="toast-error"><Unplug size={16} /><span>{walletError}</span><button onClick={() => setWalletError("")}><X size={15} /></button></div>}
         <main>
           {view === "dashboard" && <Dashboard projects={visibleProjects} snapshot={snapshot} loadingNetwork={networkLoading} liveLoading={liveLoading} onRefreshNetwork={refreshNetwork} onOpenProject={openProject} onCreate={() => changeView("create")} />}

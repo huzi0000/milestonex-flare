@@ -61,6 +61,20 @@ export type NetworkSnapshot = {
   fxrpDecimals: number;
   xrpUsdPrice: number;
   priceTimestamp: number;
+  source?: "live" | "verified-fallback";
+};
+
+export const verifiedNetworkFallback: NetworkSnapshot = {
+  blockNumber: 33_620_628n,
+  ftsoAddress: "0xC4e9c78EA53db782E28f28Fdf80BaF59336B304d",
+  assetManagerAddress: "0xc1Ca88b937d0b528842F95d5731ffB586f4fbDFA",
+  fxrpAddress: "0x0b6A3645c240605887a5532109323A3E12273dc7",
+  fxrpName: "FXRP",
+  fxrpSymbol: "FTestXRP",
+  fxrpDecimals: 6,
+  xrpUsdPrice: 1.072086,
+  priceTimestamp: 1_785_851_493,
+  source: "verified-fallback",
 };
 
 export async function getNetworkSnapshot(): Promise<NetworkSnapshot> {
@@ -111,6 +125,7 @@ export async function getNetworkSnapshot(): Promise<NetworkSnapshot> {
     fxrpDecimals,
     xrpUsdPrice,
     priceTimestamp: Number(timestamp),
+    source: "live",
   };
 }
 

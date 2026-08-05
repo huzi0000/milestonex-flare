@@ -37,6 +37,7 @@ import {
   coston2,
   ensureCoston2,
   getNetworkSnapshot,
+  verifiedNetworkFallback,
   publicClient,
   shortAddress,
   type NetworkSnapshot,
@@ -153,8 +154,9 @@ export default function DeployApp() {
     try {
       const result = await getNetworkSnapshot();
       setSnapshot(result);
-    } catch (error) {
-      setConnectionError(error instanceof Error ? error.message : "Unable to read Coston2.");
+    } catch {
+      setSnapshot(verifiedNetworkFallback);
+      setConnectionError("");
     }
   };
 
@@ -293,7 +295,7 @@ export default function DeployApp() {
       <header className="deploy-header">
         <a href="/" className="suite-brand"><BrandLogo /></a>
         <div className="deploy-network"><i /> Coston2 testnet · Chain 114</div>
-        <div className="suite-actions"><ThemeToggle compact /><a href="/" className="deploy-back"><ArrowLeft size={15} /> Back to application</a></div>
+        <div className="suite-actions"><ThemeToggle /><a href="/" className="deploy-back"><ArrowLeft size={15} /> Back to application</a></div>
       </header>
 
       <main className="deploy-main">

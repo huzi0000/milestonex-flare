@@ -149,7 +149,7 @@ Open `/lifecycle.html` to complete a real two-account testnet flow:
 
 The console reads contract state after every transaction and links each receipt to the Coston2 explorer.
 
-Responsive and visual QA evidence is documented in [`web/RESPONSIVE_AUDIT.md`](./web/RESPONSIVE_AUDIT.md).
+Responsive and visual QA evidence is documented in [`web/RESPONSIVE_AUDIT.md`](./web/RESPONSIVE_AUDIT.md). Final theme-toggle, explicit dark-surface, overflow, and fallback verification is documented in [`web/THEME_RESPONSIVE_QA.md`](./web/THEME_RESPONSIVE_QA.md).
 
 ## Visual system
 

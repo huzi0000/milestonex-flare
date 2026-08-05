@@ -1,0 +1,220 @@
+/* Final cross-browser theme and responsive stability layer.
+   Loaded last so legacy component styles cannot override theme tokens. */
+html, body, #root, #deploy-root, #lifecycle-root { width: 100%; max-width: 100%; min-width: 0; overflow-x: clip; }
+img, svg { max-width: 100%; }
+.app-shell, .main-column, main, .dashboard-hero-v4, .dashboard-grid, .projects-panel,
+.project-card, .project-overview-grid, .milestone-layout, .create-shell, .create-grid,
+.deploy-main, .deploy-grid, .deploy-panel, .deploy-aside, .manifest-panel,
+.life-main, .life-grid, .life-workflow, .life-aside, .life-proof-card { min-width: 0; }
+
+/* Explicit light theme — no color-mix dependency for critical surfaces. */
+html[data-theme="light"], html[data-theme="light"] body { background-color: #f4f8f5 !important; color: #0a1c14 !important; }
+html[data-theme="light"] .topbar,
+html[data-theme="light"] .deploy-header,
+html[data-theme="light"] .life-header { background: rgba(248, 251, 249, .97) !important; color: #0a1c14 !important; border-color: #d3e0d9 !important; }
+html[data-theme="light"] .main-column,
+html[data-theme="light"] main { color: #0a1c14; }
+
+/* Explicit dark theme. */
+html[data-theme="dark"], html[data-theme="dark"] body { background: #06100c !important; color: #effaf4 !important; }
+html[data-theme="dark"] body {
+  background-image: radial-gradient(circle at 82% -8%, rgba(46, 213, 140, .1), transparent 32rem) !important;
+}
+html[data-theme="dark"] .main-column,
+html[data-theme="dark"] main,
+html[data-theme="dark"] .activity-page,
+html[data-theme="dark"] .create-shell { color: #effaf4 !important; }
+html[data-theme="dark"] .topbar,
+html[data-theme="dark"] .deploy-header,
+html[data-theme="dark"] .life-header {
+  background: rgba(4, 14, 10, .97) !important;
+  color: #effaf4 !important;
+  border-color: #1e382c !important;
+  box-shadow: 0 8px 28px rgba(0,0,0,.15);
+}
+html[data-theme="dark"] .topbar-search,
+html[data-theme="dark"] .topbar-search span,
+html[data-theme="dark"] .deploy-back,
+html[data-theme="dark"] .life-back { color: #98aa9f !important; }
+html[data-theme="dark"] .topbar-search kbd { background: #0c1d16 !important; color: #c7d8cf !important; border-color: #284538 !important; }
+html[data-theme="dark"] .mobile-menu,
+html[data-theme="dark"] .icon-button,
+html[data-theme="dark"] .theme-toggle,
+html[data-theme="dark"] .secondary-button {
+  background: #0b1913 !important;
+  color: #effaf4 !important;
+  border-color: #244335 !important;
+}
+html[data-theme="dark"] .theme-toggle-track { background: #11271d !important; border-color: #2a4d3c !important; }
+html[data-theme="dark"] .theme-toggle-thumb { background: #1a3528 !important; color: #72e8b1 !important; }
+html[data-theme="dark"] footer { background: #06100c !important; color: #91a99d !important; border-color: #1e382c !important; }
+
+/* Dark text hierarchy. */
+html[data-theme="dark"] h1,
+html[data-theme="dark"] h2,
+html[data-theme="dark"] h3,
+html[data-theme="dark"] h4,
+html[data-theme="dark"] strong,
+html[data-theme="dark"] label,
+html[data-theme="dark"] .brand-wordmark,
+html[data-theme="dark"] .project-copy h3,
+html[data-theme="dark"] .section-heading h2,
+html[data-theme="dark"] .form-title h2,
+html[data-theme="dark"] .timeline-top h3,
+html[data-theme="dark"] .setting-card h3,
+html[data-theme="dark"] .activity-list strong,
+html[data-theme="dark"] .proof-card-heading h2,
+html[data-theme="dark"] .manifest-heading h2 { color: #effaf4 !important; }
+html[data-theme="dark"] p,
+html[data-theme="dark"] small,
+html[data-theme="dark"] .project-copy > span,
+html[data-theme="dark"] .project-footer,
+html[data-theme="dark"] .timeline-meta,
+html[data-theme="dark"] .balance-labels,
+html[data-theme="dark"] .setting-card p,
+html[data-theme="dark"] .activity-list small,
+html[data-theme="dark"] .activity-list time,
+html[data-theme="dark"] .form-card label small { color: #91a99d; }
+html[data-theme="dark"] .eyebrow,
+html[data-theme="dark"] .life-eyebrow,
+html[data-theme="dark"] .deploy-eyebrow,
+html[data-theme="dark"] .life-aside-title,
+html[data-theme="dark"] .aside-title,
+html[data-theme="dark"] .how-head-v4 > div > span { color: #69e5ad !important; }
+
+/* Dark surfaces. */
+html[data-theme="dark"] .stat-card,
+html[data-theme="dark"] .projects-panel,
+html[data-theme="dark"] .project-card,
+html[data-theme="dark"] .overview-card,
+html[data-theme="dark"] .milestone-panel,
+html[data-theme="dark"] .audit-panel,
+html[data-theme="dark"] .form-card,
+html[data-theme="dark"] .activity-card,
+html[data-theme="dark"] .setting-card,
+html[data-theme="dark"] .deploy-panel,
+html[data-theme="dark"] .wallet-summary,
+html[data-theme="dark"] .dependency-card,
+html[data-theme="dark"] .manifest-panel,
+html[data-theme="dark"] .deploy-explainer,
+html[data-theme="dark"] .life-card,
+html[data-theme="dark"] .life-summary,
+html[data-theme="dark"] .life-roles,
+html[data-theme="dark"] .life-activity,
+html[data-theme="dark"] .life-progress,
+html[data-theme="dark"] .life-contract,
+html[data-theme="dark"] .deploy-proof,
+html[data-theme="dark"] .how-v4 {
+  background: #0b1913 !important;
+  color: #effaf4 !important;
+  border-color: #1f3b2e !important;
+  box-shadow: 0 18px 48px rgba(0,0,0,.18) !important;
+}
+html[data-theme="dark"] .project-card,
+html[data-theme="dark"] .proof-metrics > div,
+html[data-theme="dark"] .proof-receipts a,
+html[data-theme="dark"] .review-project,
+html[data-theme="dark"] .onchain-state > div,
+html[data-theme="dark"] .connected-wallet,
+html[data-theme="dark"] .quote-line,
+html[data-theme="dark"] .deploy-address,
+html[data-theme="dark"] .flare-stack-v4 > div {
+  background: #0e2018 !important;
+  color: #effaf4 !important;
+  border-color: #284638 !important;
+}
+html[data-theme="dark"] .form-card input,
+html[data-theme="dark"] .form-card select,
+html[data-theme="dark"] .life-fields input,
+html[data-theme="dark"] .evidence-input textarea,
+html[data-theme="dark"] .milestone-row input {
+  background: #0d1e17 !important;
+  color: #effaf4 !important;
+  border-color: #2a4a3b !important;
+}
+html[data-theme="dark"] input::placeholder,
+html[data-theme="dark"] textarea::placeholder { color: #6f8579 !important; opacity: 1; }
+html[data-theme="dark"] select option { background: #0d1e17; color: #effaf4; }
+html[data-theme="dark"] .how-head-v4,
+html[data-theme="dark"] .flare-stack-v4,
+html[data-theme="dark"] .product-flow-head,
+html[data-theme="dark"] .product-flow-grid > div { border-color: #244133 !important; }
+html[data-theme="dark"] .flare-stack-v4 { background: #0a1812 !important; }
+html[data-theme="dark"] .how-node-v4 { background: #0b1913 !important; box-shadow: 0 0 0 8px #0b1913, 0 12px 26px rgba(0,0,0,.25) !important; }
+html[data-theme="dark"] .how-node-v4 > span { background: #69e5ad !important; color: #06100c !important; border-color: #0b1913 !important; }
+html[data-theme="dark"] .life-proof-card { background: linear-gradient(145deg, #0b2017, #0c291d) !important; color: #effaf4 !important; border-color: #2f6a50 !important; }
+html[data-theme="dark"] .manifest-panel pre,
+html[data-theme="dark"] .hash-box,
+html[data-theme="dark"] .network-card,
+html[data-theme="dark"] .quote-card { background: #020b07 !important; color: #c9e7d8 !important; border-color: #1e4935 !important; }
+html[data-theme="dark"] code { color: #a3d8bd; }
+
+/* Prevent legacy fixed widths and overlap. */
+.project-card-top, .hero-meta, .project-actions, .topbar-actions, .suite-actions,
+.timeline-meta, .manifest-heading, .flare-stack-v4, .hero-trust-v4 { min-width: 0; flex-wrap: wrap; }
+.project-card-top > *, .hero-meta > *, .project-actions > *, .topbar-actions > *, .suite-actions > * { max-width: 100%; }
+.timeline-meta button, .deploy-address code, .hash-box code, .setting-card p { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+
+/* Definitive responsive breakpoints. */
+@media (max-width: 1100px) {
+  .dashboard-hero-v4 { grid-template-columns: 1fr 390px !important; gap: 28px !important; }
+  .dashboard-grid { grid-template-columns: 1fr !important; }
+  .dashboard-grid > aside { grid-template-columns: 1fr 1fr !important; }
+  .deploy-grid, .life-grid { grid-template-columns: minmax(0,1fr) 270px !important; }
+}
+@media (max-width: 900px) {
+  .sidebar { display: none !important; width: min(86vw, 320px) !important; }
+  .sidebar.open { display: flex !important; }
+  .main-column { margin-left: 0 !important; width: 100% !important; }
+  .topbar { grid-template-columns: auto minmax(0,1fr) auto !important; width: 100% !important; }
+  .mobile-menu, .mobile-top-brand { display: flex !important; }
+  .topbar-search, .network-badge { display: none !important; }
+  .dashboard-hero-v4 { grid-template-columns: 1fr !important; }
+  .hero-visual-v4 { width: 100% !important; min-height: clamp(320px, 62vw, 510px) !important; }
+  .stats-grid { grid-template-columns: repeat(2, minmax(0,1fr)) !important; }
+  .dashboard-grid > aside { grid-template-columns: 1fr !important; }
+  .project-overview-grid, .milestone-layout, .create-grid, .deploy-grid, .life-grid { grid-template-columns: 1fr !important; }
+  .deploy-aside, .life-aside { position: static !important; grid-template-columns: 1fr 1fr !important; }
+  .quote-card { position: static !important; }
+}
+@media (max-width: 620px) {
+  main { width: 100% !important; padding-inline: 14px !important; }
+  .topbar { padding-inline: 10px !important; gap: 7px !important; }
+  .mobile-top-brand .brand-wordmark { display: none !important; }
+  .theme-toggle { width: 36px !important; min-width: 36px !important; min-height: 36px !important; padding: 3px !important; }
+  .theme-toggle-label { display: none !important; }
+  .theme-toggle-track { width: 28px !important; height: 28px !important; padding: 4px !important; border: 0 !important; background: transparent !important; }
+  .theme-toggle-thumb { width: 18px !important; height: 18px !important; transform: none !important; }
+  .wallet-button { min-width: 0 !important; }
+  .wallet-button > span:not(.wallet-avatar), .wallet-button p { display: none !important; }
+  .hero-copy-v4 h1 { font-size: clamp(42px, 13vw, 60px) !important; }
+  .hero-copy-v4 .hero-actions { grid-template-columns: 1fr !important; }
+  .hero-copy-v4 .hero-actions > * { width: 100% !important; }
+  .hero-visual-v4 { min-height: 310px !important; border-radius: 20px !important; }
+  .stats-grid { grid-template-columns: repeat(2, minmax(0,1fr)) !important; gap: 9px !important; }
+  .stat-card { min-width: 0 !important; padding: 14px !important; }
+  .stat-card h3 { font-size: clamp(18px, 6vw, 23px) !important; overflow-wrap: anywhere; }
+  .projects-panel, .project-card, .form-card, .quote-card, .milestone-panel, .audit-panel,
+  .deploy-panel, .manifest-panel, .life-card, .life-proof-card { width: 100% !important; max-width: 100% !important; }
+  .project-money, .onchain-state, .proof-metrics { grid-template-columns: 1fr 1fr !important; }
+  .project-actions { display: grid !important; grid-template-columns: 1fr !important; width: 100% !important; }
+  .project-actions > * { width: 100% !important; }
+  .setting-card { display: grid !important; grid-template-columns: 38px minmax(0, 1fr) !important; gap: 10px 12px !important; overflow: hidden !important; }
+  .setting-card > span:first-child { grid-column: 1; grid-row: 1; }
+  .setting-card > div { grid-column: 2; grid-row: 1; min-width: 0 !important; }
+  .setting-card > .status, .setting-card > svg:last-child { grid-column: 2; grid-row: 2; justify-self: start; max-width: 100%; }
+  .setting-card p { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .deploy-aside, .life-aside { grid-template-columns: 1fr !important; }
+  .manifest-heading { align-items: stretch !important; }
+  .manifest-heading > div:last-child { width: 100% !important; }
+  .life-progress { grid-template-columns: repeat(3, minmax(0,1fr)) !important; overflow: visible !important; }
+  .proof-receipts { grid-template-columns: 1fr !important; }
+  .how-head-v4 { grid-template-columns: 1fr !important; }
+  .flare-stack-v4 { flex-direction: column !important; align-items: stretch !important; }
+  .flare-stack-v4 > div { width: 100% !important; min-width: 0 !important; }
+  .footer-flare { border-left: 0 !important; padding-left: 0 !important; }
+}
+@media (max-width: 350px) {
+  .stats-grid, .project-money, .onchain-state, .proof-metrics { grid-template-columns: 1fr !important; }
+  .visual-proof-badge { display: none !important; }
+}

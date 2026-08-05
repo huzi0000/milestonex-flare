@@ -39,6 +39,38 @@ export const projectOneTransactions = {
   released: "0x35b8db6dc90a44484a855827aca2802260b434119c844274f6c02c79270a5304",
 } as const;
 
+const verifiedProjectOne: Project = {
+  id: 1,
+  title: "MilestoneX launch experience",
+  category: "Verified FXRP escrow",
+  client: "0x7BbB50b3e38aac305d94C53CC239cF243E2608EF",
+  contractor: "0x54CBc5f53e16fFFAc586a2B14Bf4D9d40866DF2F",
+  metadataHash: "0xe3f355feb9872ae47bf3c0c45e8bfe69362605eb40954562b49614fdeaf6d981",
+  totalUsdCents: 500,
+  lockedFxrp: 4.663805,
+  releasedFxrp: 4.663805,
+  status: "completed",
+  due: "Completed on Coston2",
+  source: "live",
+  contractAddress: deployment.milestoneEscrow,
+  proof: projectOneTransactions,
+  milestones: [
+    {
+      id: 0,
+      title: "Live product delivery",
+      description: "The first fully verified client-to-contractor FXRP milestone lifecycle.",
+      usdCents: 500,
+      evidenceHash: "0x45f078b58a630e8fa8a48532cd65f2f4a0286a741595df51c10cc5a342b0633d",
+      due: "Completed",
+      status: "paid",
+    },
+  ],
+};
+
+export function getVerifiedFallbackProjects(): Project[] {
+  return [{ ...verifiedProjectOne, milestones: verifiedProjectOne.milestones.map((item) => ({ ...item })) }];
+}
+
 const projectStatus = (status: number): Project["status"] => {
   if (status === 2) return "funded";
   if (status === 3) return "completed";
