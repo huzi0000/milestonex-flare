@@ -33,8 +33,11 @@ import {
   type Address,
   type Hash,
 } from "viem";
+import BrandLogo from "./components/BrandLogo";
+import ThemeToggle from "./components/ThemeToggle";
 import { MilestoneEscrowArtifact } from "./generated/contracts";
 import { deployment } from "./generated/deployment";
+import { projectOneTransactions } from "./lib/milestonex";
 import {
   COSTON2_CHAIN_ID,
   COSTON2_EXPLORER,
@@ -100,7 +103,7 @@ export default function LifecycleApp() {
   const [fxrpBalance, setFxrpBalance] = useState(0n);
   const [projectId, setProjectId] = useState<bigint | null>(() => {
     const saved = localStorage.getItem(STORAGE_PROJECT);
-    return saved ? BigInt(saved) : null;
+    return saved ? BigInt(saved) : 1n;
   });
   const [project, setProject] = useState<ChainProject | null>(null);
   const [milestone, setMilestone] = useState<ChainMilestone | null>(null);
@@ -130,6 +133,7 @@ export default function LifecycleApp() {
   const completed = project?.status === 3;
 
   const currentStep = useMemo(() => {
+    if (completed) return 7;
     if (!account) return 1;
     if (!projectCreated) return 2;
     if (!approved && !funded) return 3;
@@ -347,9 +351,9 @@ export default function LifecycleApp() {
   return (
     <div className="life-page">
       <header className="life-header">
-        <a href="/" className="life-brand"><span>M</span><strong>Milestone<span>X</span></strong></a>
+        <a href="/" className="suite-brand"><BrandLogo /></a>
         <div className="life-live"><i /> Live Coston2 workflow</div>
-        <a href="/" className="life-back"><ArrowLeft size={15} /> Application</a>
+        <div className="suite-actions"><ThemeToggle compact /><a href="/" className="life-back"><ArrowLeft size={15} /> Application</a></div>
       </header>
 
       <main className="life-main">
@@ -369,8 +373,19 @@ export default function LifecycleApp() {
 
         {completed && <section className="life-success"><BadgeCheck size={30} /><div><span>LIFECYCLE COMPLETE</span><h2>From agreement to payment—proven on Flare.</h2><p>Project #{projectId?.toString()} is complete, the contractor was paid, and every step has a public transaction receipt.</p></div></section>}
 
-        <section className="life-grid">
-          <div className="life-workflow">
+        <section className={`life-grid ${completed ? "is-complete" : ""}`}>
+          <div className={`life-workflow ${completed ? "is-complete" : ""}`}>
+            {completed && <article className="life-proof-card">
+              <div className="proof-card-heading"><span><BadgeCheck size={22} /></span><div><p>VERIFIED PROJECT #1</p><h2>Agreement, delivery, and payment—complete.</h2><span>The public Coston2 record confirms a $5 milestone was funded with 4.663805 FXRP and released in full.</span></div></div>
+              <div className="proof-metrics"><div><span>Project value</span><strong>$5.00</strong></div><div><span>FXRP funded</span><strong>4.663805</strong></div><div><span>FXRP released</span><strong>4.663805</strong></div><div><span>Escrow remainder</span><strong>0 FXRP</strong></div></div>
+              <div className="proof-receipts">
+                <a href={txUrl(projectOneTransactions.created)} target="_blank" rel="noreferrer"><span>01</span><p><strong>Project created</strong><small>Terms committed onchain</small></p><ExternalLink size={14} /></a>
+                <a href={txUrl(projectOneTransactions.funded)} target="_blank" rel="noreferrer"><span>02</span><p><strong>Escrow funded</strong><small>FTSO-priced FXRP locked</small></p><ExternalLink size={14} /></a>
+                <a href={txUrl(projectOneTransactions.evidence)} target="_blank" rel="noreferrer"><span>03</span><p><strong>Evidence submitted</strong><small>Delivery hash recorded</small></p><ExternalLink size={14} /></a>
+                <a href={txUrl(projectOneTransactions.released)} target="_blank" rel="noreferrer"><span>04</span><p><strong>Payment released</strong><small>Contractor paid in full</small></p><ExternalLink size={14} /></a>
+              </div>
+              <div className="proof-integrity"><ShieldCheck size={17} /><span>11 automated lifecycle checks passed · no FXRP trapped in escrow</span></div>
+            </article>}
             <article className={`life-card ${currentStep === 1 ? "focus" : ""}`}>
               <div className="life-card-head"><span><WalletCards size={18} /></span><div><p>STEP 01</p><h2>Connect the client wallet</h2></div>{account && <BadgeCheck size={18} />}</div>
               <p className="life-description">Begin with the original account that deployed MilestoneX and holds test FXRP.</p>

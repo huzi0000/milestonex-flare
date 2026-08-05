@@ -53,6 +53,8 @@ import {
 import { demoProjects, fxrp, money, type Project } from "./lib/data";
 import { getLiveProjects } from "./lib/milestonex";
 import { deployment } from "./generated/deployment";
+import BrandLogo from "./components/BrandLogo";
+import ThemeToggle from "./components/ThemeToggle";
 
 type View = "dashboard" | "project" | "create" | "activity" | "settings";
 type MilestoneDraft = { title: string; amount: string };
@@ -75,19 +77,6 @@ const copyText = async (value: string) => {
     // Clipboard may be unavailable in an embedded preview.
   }
 };
-
-function Logo() {
-  return (
-    <div className="logo" aria-label="MilestoneX">
-      <span className="logo-mark"><span>M</span><ArrowUp /></span>
-      <span className="logo-word">Milestone<span>X</span></span>
-    </div>
-  );
-}
-
-function ArrowUp() {
-  return <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4.3 13.7 13.7 4.3M7.2 4.3h6.5v6.5" /></svg>;
-}
 
 function StatusPill({ status }: { status: string }) {
   return <span className={`status status-${status}`}><span />{statusLabel[status] ?? status}</span>;
@@ -186,9 +175,44 @@ function ProjectCard({ project, onOpen }: { project: Project; onOpen: () => void
       <div className="progress-line"><span style={{ width: `${progress}%` }} /></div>
       <div className="project-footer">
         <span>{paid}/{project.milestones.length} milestones paid{submitted ? ` · ${submitted} ready` : ""}</span>
-        <span>Due {project.due}<ArrowRight size={14} /></span>
+        <span>{project.source === "live" ? project.due : `Due ${project.due}`}<ArrowRight size={14} /></span>
       </div>
     </button>
+  );
+}
+
+function ProductFlow() {
+  const steps = [
+    { icon: FileCheck2, number: "01", title: "Agree", copy: "Set USD-denominated outcomes and a contractor wallet." },
+    { icon: ShieldCheck, number: "02", title: "Lock", copy: "FTSO prices the project and FXRP moves into escrow." },
+    { icon: FileKey2, number: "03", title: "Prove", copy: "The contractor commits a tamper-evident delivery hash." },
+    { icon: HandCoins, number: "04", title: "Release", copy: "Approved FXRP settles directly with a public receipt." },
+  ];
+  return (
+    <section className="how-v4">
+      <div className="how-head-v4">
+        <div><span>HOW MILESTONEX WORKS</span><h3>From scope to settlement,<br /><em>without the trust gap.</em></h3></div>
+        <p>Flare turns XRP into programmable project value. MilestoneX adds the workflow that clients and contractors actually need.</p>
+      </div>
+      <div className="how-rail-v4">
+        <div className="how-line-v4"><i /><b /></div>
+        {steps.map(({ icon: Icon, number, title, copy }) => (
+          <article key={number}>
+            <div className="how-node-v4"><Icon size={20} /><span>{number}</span></div>
+            <h4>{title}</h4>
+            <p>{copy}</p>
+          </article>
+        ))}
+        <span className="moving-fxrp-v4">XRP</span>
+      </div>
+      <div className="flare-stack-v4">
+        <div><span className="stack-visual-v4"><CircleDollarSign size={20} /></span><p><strong>FXRP</strong><span>Programmable XRP value</span></p></div>
+        <ArrowRight size={16} />
+        <div><span className="stack-visual-v4"><Gauge size={20} /></span><p><strong>FTSOv2</strong><span>Decentralized USD pricing</span></p></div>
+        <ArrowRight size={16} />
+        <div><span className="stack-visual-v4"><Blocks size={20} /></span><p><strong>Coston2</strong><span>Public execution proof</span></p></div>
+      </div>
+    </section>
   );
 }
 
@@ -210,7 +234,6 @@ function Dashboard({
   onCreate: () => void;
 }) {
   const liveProjects = projects.filter((project) => project.source === "live");
-  const previewProjects = projects.filter((project) => project.source !== "live");
   const active = liveProjects.filter((project) => project.status === "funded");
   const protectedFxrp = liveProjects.reduce((sum, project) => sum + Math.max(0, project.lockedFxrp - project.releasedFxrp), 0);
   const released = liveProjects.reduce((sum, project) => sum + project.releasedFxrp, 0);
@@ -218,13 +241,24 @@ function Dashboard({
 
   return (
     <>
-      <section className="page-heading dashboard-heading">
-        <div>
-          <span className="eyebrow">CLIENT WORKSPACE</span>
+      <section className="dashboard-hero-v4">
+        <div className="hero-copy-v4">
+          <div className="flare-kicker"><span className="flare-kicker-icon"><Blocks size={15} /></span><span>INTEROPERABLE ASSETS ON FLARE</span></div>
           <h1>Work protected.<br /><em>Payments proven.</em></h1>
-          <p>Structure global projects into milestones, protect funds in FXRP, and release only when work moves forward.</p>
+          <p>Programmable FXRP escrow for global work. Agree in milestones, verify each delivery, and release value with public Coston2 proof.</p>
+          <div className="hero-actions"><a className="primary-button" href="/lifecycle.html"><Zap size={17} /> Explore verified lifecycle</a><button className="secondary-button" onClick={onCreate}><Plus size={17} /> Create a project</button></div>
+          <div className="hero-trust-v4">
+            <span><BadgeCheck size={15} /> Deployed contracts</span>
+            <span><Gauge size={15} /> Live FTSOv2 pricing</span>
+            <span><CircleDollarSign size={15} /> Real test FXRP</span>
+          </div>
         </div>
-        <button className="primary-button" onClick={onCreate}><Plus size={17} /> New project</button>
+        <div className="hero-visual-v4">
+          <img src="/visuals/milestonex-hero.webp" alt="Abstract MilestoneX escrow vault surrounded by a path of milestone tokens" />
+          <div className="visual-flare-badge"><span className="visual-flare-icon"><Blocks size={18} /></span><span><small>BUILT ON</small><strong>Flare</strong></span></div>
+          <div className="visual-proof-badge"><BadgeCheck size={18} /><span><small>PROJECT #1</small><strong>Lifecycle verified</strong></span></div>
+          <div className="visual-route-v4"><span className="done">1</span><i /><span className="done">2</span><i /><span className="done">3</span><i /><span className="done">4</span></div>
+        </div>
       </section>
 
       <section className="stats-grid">
@@ -245,10 +279,6 @@ function Dashboard({
             {!liveLoading && liveProjects.length === 0 && <div className="live-loading">No live project has been created yet.</div>}
             {liveProjects.map((project) => <ProjectCard key={`live-${project.id}`} project={project} onOpen={() => onOpenProject(project)} />)}
           </div>
-          <div className="preview-divider"><span>PRODUCT EXPERIENCE PREVIEWS</span><i /></div>
-          <div className="project-list preview-projects">
-            {previewProjects.map((project) => <ProjectCard key={`preview-${project.id}`} project={project} onOpen={() => onOpenProject(project)} />)}
-          </div>
         </div>
         <aside>
           <NetworkCard snapshot={snapshot} loading={loadingNetwork} onRefresh={onRefreshNetwork} />
@@ -259,6 +289,7 @@ function Dashboard({
           </article>
         </aside>
       </section>
+      <ProductFlow />
     </>
   );
 }
@@ -318,7 +349,7 @@ function ProjectDetail({ project, onBack }: { project: Project; onBack: () => vo
                 <div className="timeline-content">
                   <div className="timeline-top"><div><StatusPill status={milestone.status} /><h3>{milestone.title}</h3></div><strong>{money(milestone.usdCents)}</strong></div>
                   <p>{milestone.description}</p>
-                  <div className="timeline-meta"><span><Clock3 size={14} /> Due {milestone.due}</span>{milestone.evidenceHash && <button onClick={() => copyText(milestone.evidenceHash!)}><FileKey2 size={14} /> Evidence {milestone.evidenceHash}<Copy size={12} /></button>}</div>
+                  <div className="timeline-meta"><span><Clock3 size={14} /> Due {milestone.due}</span>{milestone.evidenceHash && <button onClick={() => copyText(milestone.evidenceHash!)}><FileKey2 size={14} /> Evidence {shortAddress(milestone.evidenceHash)}<Copy size={12} /></button>}</div>
                   {milestone.status === "submitted" && <div className="review-bar"><div><CheckCircle2 size={18} /><span><strong>Evidence submitted</strong><small>Review the work before releasing this milestone.</small></span></div><button>Review & release <ArrowRight size={14} /></button></div>}
                 </div>
               </article>
@@ -525,6 +556,7 @@ export default function App() {
     () => [...liveProjects, ...projects],
     [liveProjects, projects],
   );
+  const sidebarProjects = liveProjects.length ? liveProjects : projects;
 
   const navItems = useMemo(() => [
     { id: "dashboard" as View, label: "Overview", icon: LayoutDashboard },
@@ -535,15 +567,15 @@ export default function App() {
   return (
     <div className="app-shell">
       <aside className={`sidebar ${mobileNav ? "open" : ""}`}>
-        <div className="sidebar-head"><Logo /><button className="mobile-close" onClick={() => setMobileNav(false)}><X size={20} /></button></div>
-        <nav>{navItems.map(({ id, label, icon: Icon }) => <button key={id} className={view === id || (id === "dashboard" && view === "project") ? "active" : ""} onClick={() => changeView(id)}><Icon size={18} /><span>{label}</span></button>)}<span className="nav-label">PROJECTS</span>{visibleProjects.slice(0, 3).map((project) => <button className={view === "project" && selected.id === project.id ? "active project-nav" : "project-nav"} key={project.id} onClick={() => openProject(project)}><span className={`project-dot project-dot-${project.status}`} /><span>{project.title}</span></button>)}</nav>
+        <div className="sidebar-head"><BrandLogo tone="light" /><button className="mobile-close" onClick={() => setMobileNav(false)}><X size={20} /></button></div>
+        <nav>{navItems.map(({ id, label, icon: Icon }) => <button key={id} className={view === id || (id === "dashboard" && view === "project") ? "active" : ""} onClick={() => changeView(id)}><Icon size={18} /><span>{label}</span></button>)}<span className="nav-label">PROJECTS</span>{sidebarProjects.slice(0, 3).map((project) => <button className={view === "project" && selected.id === project.id ? "active project-nav" : "project-nav"} key={`${project.source ?? "demo"}-${project.id}`} onClick={() => openProject(project)}><span className={`project-dot project-dot-${project.status}`} /><span>{project.title}</span></button>)}</nav>
         <div className="sidebar-bottom"><div className="build-card"><span><Zap size={15} /> HACKATHON BUILD</span><strong>10 days to signal</strong><p>Core contracts ready. Product experience in progress.</p><div><i style={{ width: "38%" }} /></div></div><button className="support-link"><Info size={17} /> Documentation<ExternalLink size={13} /></button></div>
       </aside>
 
       {mobileNav && <button className="sidebar-backdrop" onClick={() => setMobileNav(false)} aria-label="Close navigation" />}
 
       <div className="main-column">
-        <header className="topbar"><button className="mobile-menu" onClick={() => setMobileNav(true)}><Menu size={21} /></button><div className="topbar-search"><Search size={17} /><span>Search projects, addresses, or proofs</span><kbd>⌘ K</kbd></div><div className="topbar-actions"><div className={`network-badge ${networkError ? "network-error" : ""}`}><span />{networkError ? "RPC retrying" : "Coston2 live"}</div><button className="icon-button"><Bell size={18} /><i /></button>{wallet ? <button className="wallet-button connected" onClick={() => copyText(wallet)}><span className="wallet-avatar">H</span><p><strong>{shortAddress(wallet)}</strong><small>{walletBalance === null ? "Balance loading" : `${walletBalance.toFixed(2)} FXRP`}</small></p><ChevronDown size={14} /></button> : <button className="wallet-button" onClick={handleWallet} disabled={walletBusy}><WalletCards size={17} /><span>{walletBusy ? "Connecting…" : "Connect wallet"}</span></button>}</div></header>
+        <header className="topbar"><button className="mobile-menu" onClick={() => setMobileNav(true)} aria-label="Open navigation"><Menu size={21} /></button><a className="mobile-top-brand" href="/"><BrandLogo /></a><div className="topbar-search"><Search size={17} /><span>Search projects, addresses, or proofs</span><kbd>⌘ K</kbd></div><div className="topbar-actions"><ThemeToggle compact /><div className={`network-badge ${networkError ? "network-error" : ""}`}><span />{networkError ? "RPC retrying" : "Coston2 live"}</div><button className="icon-button"><Bell size={18} /><i /></button>{wallet ? <button className="wallet-button connected" onClick={() => copyText(wallet)}><span className="wallet-avatar">H</span><p><strong>{shortAddress(wallet)}</strong><small>{walletBalance === null ? "Balance loading" : `${walletBalance.toFixed(2)} FXRP`}</small></p><ChevronDown size={14} /></button> : <button className="wallet-button" onClick={handleWallet} disabled={walletBusy}><WalletCards size={17} /><span>{walletBusy ? "Connecting…" : "Connect wallet"}</span></button>}</div></header>
         {walletError && <div className="toast-error"><Unplug size={16} /><span>{walletError}</span><button onClick={() => setWalletError("")}><X size={15} /></button></div>}
         <main>
           {view === "dashboard" && <Dashboard projects={visibleProjects} snapshot={snapshot} loadingNetwork={networkLoading} liveLoading={liveLoading} onRefreshNetwork={refreshNetwork} onOpenProject={openProject} onCreate={() => changeView("create")} />}
@@ -552,7 +584,7 @@ export default function App() {
           {view === "activity" && <ActivityView />}
           {view === "settings" && <SettingsView snapshot={snapshot} />}
         </main>
-        <footer><Logo /><p>Experimental Coston2 prototype. Never use real funds.</p><div><a href="https://github.com/huzi0000/milestonex-flare" target="_blank" rel="noreferrer">GitHub <ExternalLink size={12} /></a><a href={COSTON2_EXPLORER} target="_blank" rel="noreferrer">Explorer <ExternalLink size={12} /></a></div></footer>
+        <footer><BrandLogo /><span className="footer-flare"><span className="footer-flare-icon"><Blocks size={14} /></span><small>Built on Flare</small></span><p>Experimental Coston2 prototype. Never use real funds.</p><div><a href="https://github.com/huzi0000/milestonex-flare" target="_blank" rel="noreferrer">GitHub <ExternalLink size={12} /></a><a href={COSTON2_EXPLORER} target="_blank" rel="noreferrer">Explorer <ExternalLink size={12} /></a></div></footer>
       </div>
     </div>
   );

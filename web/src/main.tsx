@@ -2,6 +2,10 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./styles.css";
+import "./brand.css";
+import "./design-v2.css";
+import "./theme-v3.css";
+import "./flare-inspired.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

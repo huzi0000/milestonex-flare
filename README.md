@@ -54,7 +54,10 @@ MilestoneX turns FXRP into programmable project escrow while using Flare's decen
 - Guided two-account lifecycle console implemented for real create, approve, fund, evidence, and release transactions
 - Project #1 completed end-to-end on Coston2 with `4.663805 FXRP` funded and released
 - Full lifecycle events, FXRP transfer, accounting, evidence hash, and zero remaining escrow balance independently verified
-- Main application live-project integration and final submission polish in progress
+- Unified milestone-route brand identity shared across dashboard, deployment, lifecycle, project, activity, and network views
+- Persistent dark/light themes, system-preference detection, reduced-motion support, and purposeful interface animation
+- Responsive QA passed in both themes at 320, 360, 390, 430, 768, 900, 1024, 1280, and 1440 px
+- Final security expansion, user validation, and submission assets in progress
 
 See [`TECHNICAL_SPIKE.md`](./TECHNICAL_SPIKE.md) for the verified addresses and initial feasibility results.
 
@@ -63,7 +66,8 @@ See [`TECHNICAL_SPIKE.md`](./TECHNICAL_SPIKE.md) for the verified addresses and 
 ```text
 milestonex-flare/
 ├── contracts/                 # Solidity contracts, Hardhat scripts and tests
-├── web/                       # Responsive React/Vite application
+├── web/                       # Responsive React/Vite application and local visuals
+├── ATTRIBUTIONS.md            # Visual, Flare mark, and third-party attribution
 ├── EXECUTION_PLAN.md          # Internal delivery timeline
 ├── TECHNICAL_SPIKE.md         # Coston2 feasibility evidence
 ├── LICENSE
@@ -144,6 +148,12 @@ Open `/lifecycle.html` to complete a real two-account testnet flow:
 6. Switch back to the client and release payment.
 
 The console reads contract state after every transaction and links each receipt to the Coston2 explorer.
+
+Responsive and visual QA evidence is documented in [`web/RESPONSIVE_AUDIT.md`](./web/RESPONSIVE_AUDIT.md).
+
+## Visual system
+
+The interface includes persistent dark/light themes, the shared **Milestone Rise** identity, reduced-motion support, an original green-only 3D escrow visual, and a responsive animated explanation of the complete Agree → Lock → Prove → Release flow. Flare ecosystem marks are used only for technology identification and are documented in [`ATTRIBUTIONS.md`](./ATTRIBUTIONS.md).
 
 ## Security
 

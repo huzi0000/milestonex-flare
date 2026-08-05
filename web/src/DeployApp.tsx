@@ -41,6 +41,9 @@ import {
   shortAddress,
   type NetworkSnapshot,
 } from "./lib/flare";
+import BrandLogo from "./components/BrandLogo";
+import ThemeToggle from "./components/ThemeToggle";
+import { deployment } from "./generated/deployment";
 import {
   FtsoXrpUsdOracleArtifact,
   MilestoneEscrowArtifact,
@@ -126,22 +129,22 @@ export default function DeployApp() {
 
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved) as DeploymentManifest;
-        setManifest(parsed);
-        setAccount(parsed.deployer);
-        setSteps((current) => current.map((step) => {
-          const address = step.id === "oracle"
-            ? parsed.ftsoXrpUsdOracle
-            : step.id === "forwarder"
-              ? parsed.milestoneFundingForwarder
-              : parsed.milestoneEscrow;
-          return { ...step, state: "complete", address, txHash: parsed.transactions[step.id] };
-        }));
-      } catch {
-        localStorage.removeItem(STORAGE_KEY);
-      }
+    try {
+      const parsed = saved
+        ? (JSON.parse(saved) as DeploymentManifest)
+        : (deployment as unknown as DeploymentManifest);
+      setManifest(parsed);
+      if (saved) setAccount(parsed.deployer);
+      setSteps((current) => current.map((step) => {
+        const address = step.id === "oracle"
+          ? parsed.ftsoXrpUsdOracle
+          : step.id === "forwarder"
+            ? parsed.milestoneFundingForwarder
+            : parsed.milestoneEscrow;
+        return { ...step, state: "complete", address, txHash: parsed.transactions[step.id] };
+      }));
+    } catch {
+      localStorage.removeItem(STORAGE_KEY);
     }
     void loadSnapshot();
   }, []);
@@ -288,30 +291,28 @@ export default function DeployApp() {
   return (
     <div className="deploy-page">
       <header className="deploy-header">
-        <a href="/" className="deploy-brand">
-          <span>M</span><strong>Milestone<span>X</span></strong>
-        </a>
+        <a href="/" className="suite-brand"><BrandLogo /></a>
         <div className="deploy-network"><i /> Coston2 testnet · Chain 114</div>
-        <a href="/" className="deploy-back"><ArrowLeft size={15} /> Back to application</a>
+        <div className="suite-actions"><ThemeToggle compact /><a href="/" className="deploy-back"><ArrowLeft size={15} /> Back to application</a></div>
       </header>
 
       <main className="deploy-main">
         <section className="deploy-hero">
           <div>
-            <span className="deploy-eyebrow"><TerminalSquare size={13} /> SECURE DEPLOYMENT CONSOLE</span>
+            <span className="deploy-eyebrow"><BadgeCheck size={13} /> VERIFIED INFRASTRUCTURE</span>
             <h1>Three contracts.<br /><em>One verified foundation.</em></h1>
-            <p>Deploy the MilestoneX oracle adapter, authorization forwarder, and escrow directly from your Coston2 wallet. Your private key never leaves MetaMask.</p>
+            <p>MilestoneX is live on Coston2. Every deployment receipt, bytecode address, dependency, and contract linkage below is public and independently reproducible.</p>
           </div>
           <div className="deploy-proof">
             <ShieldCheck size={23} />
-            <p><strong>Testnet only</strong><span>This console refuses every chain except Coston2.</span></p>
+            <p><strong>Deployed on Coston2</strong><span>Chain 114 · test assets only · no real funds.</span></p>
           </div>
         </section>
 
         <section className="deploy-grid">
           <div className="deploy-panel">
             <div className="deploy-panel-head">
-              <div><span>DEPLOYMENT SEQUENCE</span><h2>Contract infrastructure</h2></div>
+              <div><span>DEPLOYMENT EVIDENCE</span><h2>Contract infrastructure</h2></div>
               <div className="deploy-count">{steps.filter((step) => step.state === "complete").length}<span>/ 3</span></div>
             </div>
 
@@ -330,13 +331,13 @@ export default function DeployApp() {
               ))}
             </div>
 
-            {!account ? (
+            {manifest ? (
+              <div className="deploy-complete-banner"><BadgeCheck size={20} /><p><strong>Deployment complete and verified</strong><span>All three contracts are live; the public manifest is published below.</span></p></div>
+            ) : !account ? (
               <button className="deploy-primary" onClick={connect} disabled={busy}>
                 {busy ? <LoaderCircle className="deploy-spin" size={17} /> : <WalletCards size={17} />}
                 {busy ? "Connecting…" : "Connect Coston2 wallet"}
               </button>
-            ) : manifest ? (
-              <div className="deploy-complete-banner"><BadgeCheck size={20} /><p><strong>Deployment complete</strong><span>Save the manifest and publish the three explorer links.</span></p></div>
             ) : (
               <button className="deploy-primary" onClick={deployAll} disabled={busy || !snapshot || balance === 0n}>
                 {busy ? <LoaderCircle className="deploy-spin" size={17} /> : <Rocket size={17} />}
@@ -350,8 +351,8 @@ export default function DeployApp() {
 
           <aside className="deploy-aside">
             <article className="wallet-summary">
-              <div className="aside-title"><WalletCards size={17} /><span>DEPLOYER WALLET</span>{account && <BadgeCheck size={16} />}</div>
-              {account ? <><strong>{shortAddress(account)}</strong><p>{Number(formatEther(balance)).toFixed(3)} C2FLR available</p><div className="wallet-meter"><span style={{ width: balance > 0n ? "82%" : "0%" }} /></div><small>Only free faucet tokens are used.</small></> : <div className="wallet-empty"><KeyRound size={24} /><p>Connect your dedicated test wallet to continue.</p></div>}
+              <div className="aside-title"><WalletCards size={17} /><span>DEPLOYER WALLET</span>{(account || manifest) && <BadgeCheck size={16} />}</div>
+              {manifest ? <><strong>{shortAddress(manifest.deployer)}</strong><p>Original Coston2 deployer</p><div className="wallet-meter"><span style={{ width: "100%" }} /></div><small>Public address only · deployment verified.</small></> : account ? <><strong>{shortAddress(account)}</strong><p>{Number(formatEther(balance)).toFixed(3)} C2FLR available</p><div className="wallet-meter"><span style={{ width: balance > 0n ? "82%" : "0%" }} /></div><small>Only free faucet tokens are used.</small></> : <div className="wallet-empty"><KeyRound size={24} /><p>Connect your dedicated test wallet to continue.</p></div>}
             </article>
 
             <article className="dependency-card">
@@ -361,9 +362,9 @@ export default function DeployApp() {
               <div className="dependency-row"><span><Zap size={15} /></span><p><strong>Latest block</strong><small>{snapshot ? `#${snapshot.blockNumber}` : "Connecting…"}</small></p>{snapshot && <Check size={15} />}</div>
             </article>
 
-            <article className="safety-card">
-              <AlertTriangle size={17} />
-              <div><strong>Before signing</strong><ul><li>MetaMask must show Coston2.</li><li>Never enter a seed phrase here.</li><li>Expect exactly three deployment confirmations.</li><li>Do not use a wallet with real assets.</li></ul></div>
+            <article className={manifest ? "safety-card verified-note" : "safety-card"}>
+              {manifest ? <BadgeCheck size={17} /> : <AlertTriangle size={17} />}
+              <div>{manifest ? <><strong>Verification complete</strong><ul><li>Three successful deployment receipts.</li><li>Bytecode confirmed at every address.</li><li>Escrow dependencies match the manifest.</li><li>Test assets only; no real funds used.</li></ul></> : <><strong>Before signing</strong><ul><li>MetaMask must show Coston2.</li><li>Never enter a seed phrase here.</li><li>Expect exactly three deployment confirmations.</li><li>Do not use a wallet with real assets.</li></ul></>}</div>
             </article>
           </aside>
         </section>
@@ -372,7 +373,7 @@ export default function DeployApp() {
           <section className="manifest-panel">
             <div className="manifest-heading"><div><span className="deploy-eyebrow"><FileJson size={13} /> DEPLOYMENT EVIDENCE</span><h2>Coston2 manifest</h2><p>Public addresses only. Safe to commit as <code>contracts/deployments/coston2.json</code>.</p></div><div><button onClick={() => navigator.clipboard.writeText(manifestJson)}><Clipboard size={14} /> Copy JSON</button><button className="manifest-download" onClick={downloadManifest}><Download size={14} /> Download</button></div></div>
             <pre>{manifestJson}</pre>
-            <button className="clear-manifest" onClick={clearLocal}>Clear local deployment record</button>
+            <span className="published-manifest"><BadgeCheck size={13} /> Published deployment evidence</span>
           </section>
         )}
 
