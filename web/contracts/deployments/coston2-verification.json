@@ -1,0 +1,45 @@
+{
+  "verified": true,
+  "chainId": "114",
+  "latestBlock": 33619944,
+  "codeSizes": {
+    "oracle": 634,
+    "forwarder": 2898,
+    "escrow": 6643
+  },
+  "receipts": {
+    "oracle": {
+      "status": 1,
+      "blockNumber": 33619880,
+      "contractAddress": "0xb49fD561664199fA28C9ed65644BF6f3e1332DB0"
+    },
+    "forwarder": {
+      "status": 1,
+      "blockNumber": 33619890,
+      "contractAddress": "0xc8d3A6F34e6595369A5ED0a369EBD7838c726e92"
+    },
+    "escrow": {
+      "status": 1,
+      "blockNumber": 33619901,
+      "contractAddress": "0xDfC525b55837687A0EAA04e99491a74cBa0B78EE"
+    }
+  },
+  "oracle": {
+    "priceWei": "1073407000000000000",
+    "xrpUsd": 1.073407,
+    "updatedAt": 1785851493
+  },
+  "forwarder": {
+    "domainName": "MilestoneXFundingForwarder",
+    "domainVersion": "1",
+    "chainId": "114",
+    "deployerNonce": "0"
+  },
+  "escrow": {
+    "fxrp": "0x0b6A3645c240605887a5532109323A3E12273dc7",
+    "oracle": "0xb49fD561664199fA28C9ed65644BF6f3e1332DB0",
+    "forwarder": "0xc8d3A6F34e6595369A5ED0a369EBD7838c726e92",
+    "decimals": "6",
+    "nextProjectId": "1"
+  }
+}

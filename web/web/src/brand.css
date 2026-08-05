@@ -1,0 +1,40 @@
+.brand-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  width: max-content;
+  color: #0b1913;
+  white-space: nowrap;
+  text-decoration: none;
+}
+.brand-symbol {
+  width: 38px;
+  height: 38px;
+  flex: 0 0 auto;
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 12px;
+  color: #07140f;
+  background:
+    radial-gradient(circle at 22% 18%, rgba(255,255,255,.8), transparent 32%),
+    linear-gradient(145deg, #a0f2ce 0%, #5fdda8 58%, #39b982 100%);
+  box-shadow: 0 9px 24px rgba(52, 181, 126, .22), inset 0 0 0 1px rgba(255,255,255,.42);
+}
+.brand-symbol > span {
+  transform: translate(-1px, 1px);
+  font-size: 11px;
+  font-weight: 920;
+  letter-spacing: -.075em;
+}
+.brand-symbol svg { position: absolute; right: 3px; top: 3px; }
+.brand-wordmark { font-size: 18px; font-weight: 820; letter-spacing: -.045em; }
+.brand-wordmark > span { color: #36b67e; }
+.brand-logo-light { color: #f4fff9; }
+.brand-logo-dark { color: #0b1913; }
+.brand-logo-compact .brand-symbol { width: 36px; height: 36px; }
+@media (max-width: 520px) {
+  .brand-symbol { width: 34px; height: 34px; border-radius: 10px; }
+  .brand-wordmark { font-size: 16px; }
+}
