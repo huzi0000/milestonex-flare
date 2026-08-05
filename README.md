@@ -56,7 +56,9 @@ MilestoneX turns FXRP into programmable project escrow while using Flare's decen
 - Full lifecycle events, FXRP transfer, accounting, evidence hash, and zero remaining escrow balance independently verified
 - Unified milestone-route brand identity shared across dashboard, deployment, lifecycle, project, activity, and network views
 - Persistent dark/light themes, system-preference detection, reduced-motion support, and purposeful interface animation
+- Built-in 60-second Judge Mode covering problem, workflow, Flare integration, and live proof
 - Responsive QA passed in both themes at 320, 360, 390, 430, 768, 900, 1024, 1280, and 1440 px
+- Open Graph/Twitter social preview and final favicon assets included
 - Final security expansion, user validation, and submission assets in progress
 
 See [`TECHNICAL_SPIKE.md`](./TECHNICAL_SPIKE.md) for the verified addresses and initial feasibility results.

@@ -37,6 +37,8 @@
 - Logo route, card-entry, status, success, ambient-network, hero-image, FXRP-token, and workflow-rail animations use transform/opacity rather than layout-changing properties
 - Original hero artwork uses responsive `object-fit` cropping and WebP delivery
 - Agree → Lock → Prove → Release changes from a horizontal animated rail to a vertical mobile flow
+- Judge Mode becomes a full-screen mobile experience with compact progress, stacked evidence, and fixed navigation
+- Judge Mode supports Escape, left-arrow, and right-arrow keyboard controls
 
 ## Automated checks
 

@@ -20,6 +20,9 @@ Responsive React/Vite interface for the MilestoneX Coston2 prototype.
 - Live project, allowance, escrow, evidence, release, role, and receipt state
 - Main dashboard reads deployed escrow projects and reports only real onchain totals
 - Verified Project #1 is displayed with explorer-backed proof links
+- 60-second keyboard-accessible Judge Mode with four guided product slides
+- Persistent explicit dark/light themes and responsive stability layer
+- Open Graph/Twitter sharing image and metadata
 
 ## Run
 
