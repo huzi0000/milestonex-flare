@@ -5,7 +5,6 @@ import {
   ArrowLeft,
   ArrowRight,
   BadgeCheck,
-  Bell,
   Blocks,
   BriefcaseBusiness,
   Check,
@@ -19,9 +18,7 @@ import {
   FileKey2,
   Gauge,
   HandCoins,
-  Home,
   Info,
-  Layers3,
   LayoutDashboard,
   LoaderCircle,
   Menu,
@@ -30,9 +27,6 @@ import {
   Plus,
   ReceiptText,
   RefreshCw,
-  Search,
-  Send,
-  Settings,
   ShieldCheck,
   Sparkles,
   Unplug,
@@ -285,11 +279,11 @@ function Dashboard({
         </div>
         <aside>
           <NetworkCard snapshot={snapshot} loading={loadingNetwork} onRefresh={onRefreshNetwork} />
-          <article className="insight-card">
-            <div className="insight-icon"><Sparkles size={18} /></div>
-            <div><span>Milestone insight</span><strong>One deliverable is ready for review.</strong><p>Reviewing it today keeps the project on schedule.</p></div>
+          <a className="insight-card" href="/lifecycle.html">
+            <div className="insight-icon"><BadgeCheck size={18} /></div>
+            <div><span>Verification ready</span><strong>End-to-end settlement is publicly proven.</strong><p>Inspect creation, funding, evidence, release, and zero escrow remainder.</p></div>
             <ArrowRight size={18} />
-          </article>
+          </a>
         </aside>
       </section>
       <ProductFlow />
@@ -315,8 +309,8 @@ function ProjectDetail({ project, onBack }: { project: Project; onBack: () => vo
             <a className="secondary-button" href={project.proof?.released ? `${COSTON2_EXPLORER}/tx/${project.proof.released}` : `${COSTON2_EXPLORER}/address/${deployment.milestoneEscrow}`} target="_blank" rel="noreferrer"><ReceiptText size={16} /> Final receipt</a>
             <a className="primary-button" href="/lifecycle.html"><ShieldCheck size={16} /> Lifecycle proof</a>
           </> : <>
-            <button className="secondary-button"><ReceiptText size={16} /> View preview</button>
-            <button className="primary-button"><Send size={16} /> Invite contractor</button>
+            <a className="secondary-button" href="/lifecycle.html"><ReceiptText size={16} /> Open live workflow</a>
+            <a className="primary-button" href="https://github.com/huzi0000/milestonex-flare#live-lifecycle-console" target="_blank" rel="noreferrer"><ExternalLink size={16} /> Technical guide</a>
           </>}
         </div>
       </section>
@@ -338,13 +332,13 @@ function ProjectDetail({ project, onBack }: { project: Project; onBack: () => vo
           <span>Onchain protection</span>
           <div><ShieldCheck size={24} /><strong>Escrow verified</strong></div>
           <p>Funds release only through the agreed milestone sequence.</p>
-          <button>Inspect contract <ExternalLink size={13} /></button>
+          <a className="proof-link" href={`${COSTON2_EXPLORER}/address/${deployment.milestoneEscrow}`} target="_blank" rel="noreferrer">Inspect contract <ExternalLink size={13} /></a>
         </article>
       </section>
 
       <section className="milestone-layout">
         <div className="milestone-panel">
-          <div className="section-heading"><div><h2>Milestone schedule</h2><span>{project.milestones.length} deliverables</span></div><button className="secondary-button compact"><FileCheck2 size={15} /> Project terms</button></div>
+          <div className="section-heading"><div><h2>Milestone schedule</h2><span>{project.milestones.length} deliverables</span></div><button className="secondary-button compact" onClick={() => copyText(project.metadataHash)} title="Copy metadata commitment"><Copy size={15} /> Copy terms hash</button></div>
           <div className="timeline">
             {project.milestones.map((milestone, index) => (
               <article className={`timeline-item timeline-${milestone.status}`} key={milestone.id}>
@@ -353,7 +347,7 @@ function ProjectDetail({ project, onBack }: { project: Project; onBack: () => vo
                   <div className="timeline-top"><div><StatusPill status={milestone.status} /><h3>{milestone.title}</h3></div><strong>{money(milestone.usdCents)}</strong></div>
                   <p>{milestone.description}</p>
                   <div className="timeline-meta"><span><Clock3 size={14} /> Due {milestone.due}</span>{milestone.evidenceHash && <button onClick={() => copyText(milestone.evidenceHash!)}><FileKey2 size={14} /> Evidence {shortAddress(milestone.evidenceHash)}<Copy size={12} /></button>}</div>
-                  {milestone.status === "submitted" && <div className="review-bar"><div><CheckCircle2 size={18} /><span><strong>Evidence submitted</strong><small>Review the work before releasing this milestone.</small></span></div><button>Review & release <ArrowRight size={14} /></button></div>}
+                  {milestone.status === "submitted" && <div className="review-bar"><div><CheckCircle2 size={18} /><span><strong>Evidence submitted</strong><small>Use the live lifecycle console to review and release on Coston2.</small></span></div><a href="/lifecycle.html">Open live lifecycle <ArrowRight size={14} /></a></div>}
                 </div>
               </article>
             ))}
@@ -481,7 +475,7 @@ function ActivityView() {
     { icon: BriefcaseBusiness, title: "Project terms committed", meta: "Research assistant MVP · Project #002", time: "Yesterday", tone: "violet" },
     { icon: CheckCircle2, title: "Project completed", meta: "Brand launch microsite · 884.08 FXRP released", time: "Jul 28", tone: "mint" },
   ];
-  return <section className="activity-page"><div className="page-heading"><div><span className="eyebrow">AUDIT TRAIL</span><h1>Every action,<br /><em>easy to verify.</em></h1><p>A human-readable view of the events your contracts make public.</p></div></div><div className="activity-card"><div className="section-heading"><div><h2>Recent activity</h2><span>From all projects</span></div><button className="secondary-button compact"><ExternalLink size={14} /> Explorer</button></div><div className="activity-list">{items.map((item, index) => { const Icon = item.icon; return <div key={index}><span className={`activity-icon stat-${item.tone}`}><Icon size={17} /></span><p><strong>{item.title}</strong><small>{item.meta}</small></p><time>{item.time}</time><ArrowRight size={15} /></div>; })}</div></div></section>;
+  return <section className="activity-page"><div className="page-heading"><div><span className="eyebrow">UI PREVIEW · AUDIT TRAIL</span><h1>Every action,<br /><em>easy to verify.</em></h1><p>An illustrative activity layout. Real project transactions are available through the lifecycle proof and Coston2 explorer.</p></div></div><div className="activity-card"><div className="section-heading"><div><h2>Preview activity</h2><span>Illustrative local events</span></div><a className="secondary-button compact" href={COSTON2_EXPLORER} target="_blank" rel="noreferrer"><ExternalLink size={14} /> Explorer</a></div><div className="activity-list">{items.map((item, index) => { const Icon = item.icon; return <div key={index}><span className={`activity-icon stat-${item.tone}`}><Icon size={17} /></span><p><strong>{item.title}</strong><small>{item.meta}</small></p><time>{item.time}</time><ArrowRight size={15} /></div>; })}</div></div></section>;
 }
 
 function SettingsView({ snapshot }: { snapshot: NetworkSnapshot | null }) {
@@ -574,13 +568,13 @@ export default function App() {
       <aside className={`sidebar ${mobileNav ? "open" : ""}`}>
         <div className="sidebar-head"><BrandLogo tone="light" /><button className="mobile-close" onClick={() => setMobileNav(false)}><X size={20} /></button></div>
         <nav>{navItems.map(({ id, label, icon: Icon }) => <button key={id} className={view === id || (id === "dashboard" && view === "project") ? "active" : ""} onClick={() => changeView(id)}><Icon size={18} /><span>{label}</span></button>)}<span className="nav-label">PROJECTS</span>{sidebarProjects.slice(0, 3).map((project) => <button className={view === "project" && selected.id === project.id ? "active project-nav" : "project-nav"} key={`${project.source ?? "demo"}-${project.id}`} onClick={() => openProject(project)}><span className={`project-dot project-dot-${project.status}`} /><span>{project.title}</span></button>)}</nav>
-        <div className="sidebar-bottom"><div className="build-card"><span><Zap size={15} /> HACKATHON BUILD</span><strong>10 days to signal</strong><p>Core contracts ready. Product experience in progress.</p><div><i style={{ width: "38%" }} /></div></div><button className="support-link"><Info size={17} /> Documentation<ExternalLink size={13} /></button></div>
+        <div className="sidebar-bottom"><div className="build-card"><span><BadgeCheck size={15} /> PUBLIC TESTNET PROOF</span><strong>Verified on Coston2</strong><p>Deployed contracts and end-to-end FXRP settlement with public receipts.</p><div><i style={{ width: "100%" }} /></div></div><a className="support-link" href="https://github.com/huzi0000/milestonex-flare#readme" target="_blank" rel="noreferrer"><Info size={17} /> Documentation<ExternalLink size={13} /></a></div>
       </aside>
 
       {mobileNav && <button className="sidebar-backdrop" onClick={() => setMobileNav(false)} aria-label="Close navigation" />}
 
       <div className="main-column">
-        <header className="topbar"><button className="mobile-menu" onClick={() => setMobileNav(true)} aria-label="Open navigation"><Menu size={21} /></button><a className="mobile-top-brand" href="/"><BrandLogo /></a><div className="topbar-search"><Search size={17} /><span>Search projects, addresses, or proofs</span><kbd>⌘ K</kbd></div><div className="topbar-actions"><button className="judge-mode-button" onClick={() => setJudgeTourOpen(true)}><Sparkles size={15} /><span>Judge mode</span></button><ThemeToggle /><div className={`network-badge ${networkError ? "network-error" : ""}`}><span />{networkError ? "RPC retrying" : "Coston2 live"}</div><button className="icon-button"><Bell size={18} /><i /></button>{wallet ? <button className="wallet-button connected" onClick={() => copyText(wallet)}><span className="wallet-avatar">H</span><p><strong>{shortAddress(wallet)}</strong><small>{walletBalance === null ? "Balance loading" : `${walletBalance.toFixed(2)} FXRP`}</small></p><ChevronDown size={14} /></button> : <button className="wallet-button" onClick={handleWallet} disabled={walletBusy}><WalletCards size={17} /><span>{walletBusy ? "Connecting…" : "Connect wallet"}</span></button>}</div></header>
+        <header className="topbar"><button className="mobile-menu" onClick={() => setMobileNav(true)} aria-label="Open navigation"><Menu size={21} /></button><a className="mobile-top-brand" href="/"><BrandLogo /></a><div className="topbar-search"><ShieldCheck size={17} /><span>FXRP escrow · FTSOv2 pricing · Coston2 proof</span></div><div className="topbar-actions"><button className="judge-mode-button" onClick={() => setJudgeTourOpen(true)}><Sparkles size={15} /><span>Judge mode</span></button><ThemeToggle /><div className={`network-badge ${networkError ? "network-error" : ""}`}><span />{networkError ? "RPC retrying" : "Coston2 live"}</div>{wallet ? <button className="wallet-button connected" onClick={() => copyText(wallet)}><span className="wallet-avatar">H</span><p><strong>{shortAddress(wallet)}</strong><small>{walletBalance === null ? "Balance loading" : `${walletBalance.toFixed(2)} FXRP`}</small></p><ChevronDown size={14} /></button> : <button className="wallet-button" onClick={handleWallet} disabled={walletBusy}><WalletCards size={17} /><span>{walletBusy ? "Connecting…" : "Connect wallet"}</span></button>}</div></header>
         {walletError && <div className="toast-error"><Unplug size={16} /><span>{walletError}</span><button onClick={() => setWalletError("")}><X size={15} /></button></div>}
         <main>
           {view === "dashboard" && <Dashboard projects={visibleProjects} snapshot={snapshot} loadingNetwork={networkLoading} liveLoading={liveLoading} onRefreshNetwork={refreshNetwork} onOpenProject={openProject} onCreate={() => changeView("create")} />}

@@ -118,7 +118,7 @@ footer p, footer a { font-size: 10px; }
 .balance-card h2 { font-size: 30px; }
 .balance-card p, .balance-labels { font-size: 10px; }
 .parties-card strong, .proof-card > div strong { font-size: 13px; }
-.address-chip, .proof-card p, .proof-card button { font-size: 10px; }
+.address-chip, .proof-card p, .proof-card button, .proof-card .proof-link { font-size: 10px; }
 .milestone-panel, .audit-panel { padding: 23px; border-radius: 20px; }
 .timeline-rail span { width: 30px; height: 30px; font-size: 11px; }
 .timeline-item { grid-template-columns: 30px minmax(0,1fr); }
