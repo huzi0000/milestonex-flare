@@ -47,7 +47,12 @@ import {
   type NetworkSnapshot,
 } from "./lib/flare";
 import { demoProjects, fxrp, money, type Project } from "./lib/data";
-import { getLiveProjects, getVerifiedFallbackProjects } from "./lib/milestonex";
+import {
+  getLiveProjects,
+  getVerifiedFallbackProjects,
+  projectOneTransactions,
+  projectTwoTransactions,
+} from "./lib/milestonex";
 import { deployment } from "./generated/deployment";
 import BrandLogo from "./components/BrandLogo";
 import ThemeToggle from "./components/ThemeToggle";
@@ -469,13 +474,16 @@ function CreateProject({
 
 function ActivityView() {
   const items = [
-    { icon: HandCoins, title: "Milestone payment released", meta: "Commerce dashboard redesign · 782.20 FXRP", time: "2h ago", tone: "mint" },
-    { icon: FileKey2, title: "Evidence submitted", meta: "Interface design system · 0x7d82…b118", time: "5h ago", tone: "blue" },
-    { icon: ShieldCheck, title: "Project escrow funded", meta: "Research assistant MVP · 1,676.14 FXRP", time: "Yesterday", tone: "amber" },
-    { icon: BriefcaseBusiness, title: "Project terms committed", meta: "Research assistant MVP · Project #002", time: "Yesterday", tone: "violet" },
-    { icon: CheckCircle2, title: "Project completed", meta: "Brand launch microsite · 884.08 FXRP released", time: "Jul 28", tone: "mint" },
+    { icon: HandCoins, title: "Project #2 payment released", meta: "0.469552 FXRP · contractor paid", block: "33,659,143", hash: projectTwoTransactions.released },
+    { icon: FileKey2, title: "Project #2 evidence submitted", meta: "Delivery hash committed on Coston2", block: "33,659,123", hash: projectTwoTransactions.evidence },
+    { icon: ShieldCheck, title: "Project #2 escrow funded", meta: "0.469552 FXRP · FTSOv2 priced", block: "33,659,101", hash: projectTwoTransactions.funded },
+    { icon: BriefcaseBusiness, title: "Project #2 terms committed", meta: "$0.50 milestone · client and contractor recorded", block: "33,659,078", hash: projectTwoTransactions.created },
+    { icon: HandCoins, title: "Project #1 payment released", meta: "4.663805 FXRP · contractor paid", block: "33,620,628", hash: projectOneTransactions.released },
+    { icon: FileKey2, title: "Project #1 evidence submitted", meta: "Delivery hash committed on Coston2", block: "33,620,609", hash: projectOneTransactions.evidence },
+    { icon: ShieldCheck, title: "Project #1 escrow funded", meta: "4.663805 FXRP · FTSOv2 priced", block: "33,620,586", hash: projectOneTransactions.funded },
+    { icon: BriefcaseBusiness, title: "Project #1 terms committed", meta: "$5.00 milestone · client and contractor recorded", block: "33,620,552", hash: projectOneTransactions.created },
   ];
-  return <section className="activity-page"><div className="page-heading"><div><span className="eyebrow">UI PREVIEW · AUDIT TRAIL</span><h1>Every action,<br /><em>easy to verify.</em></h1><p>An illustrative activity layout. Real project transactions are available through the lifecycle proof and Coston2 explorer.</p></div></div><div className="activity-card"><div className="section-heading"><div><h2>Preview activity</h2><span>Illustrative local events</span></div><a className="secondary-button compact" href={COSTON2_EXPLORER} target="_blank" rel="noreferrer"><ExternalLink size={14} /> Explorer</a></div><div className="activity-list">{items.map((item, index) => { const Icon = item.icon; return <div key={index}><span className={`activity-icon stat-${item.tone}`}><Icon size={17} /></span><p><strong>{item.title}</strong><small>{item.meta}</small></p><time>{item.time}</time><ArrowRight size={15} /></div>; })}</div></div></section>;
+  return <section className="activity-page"><div className="page-heading"><div><span className="eyebrow">ONCHAIN ACTIVITY</span><h1>Every action,<br /><em>easy to verify.</em></h1><p>Real creation, funding, evidence, and release transactions from completed MilestoneX projects.</p></div></div><div className="activity-card"><div className="section-heading"><div><h2>Verified receipts</h2><span>8 real Coston2 transactions</span></div><a className="secondary-button compact" href={`${COSTON2_EXPLORER}/address/${deployment.milestoneEscrow}`} target="_blank" rel="noreferrer"><ExternalLink size={14} /> Escrow explorer</a></div><div className="activity-list">{items.map((item) => { const Icon = item.icon; return <a href={`${COSTON2_EXPLORER}/tx/${item.hash}`} target="_blank" rel="noreferrer" key={`${item.title}-${item.hash}`} aria-label={`${item.title}, open Coston2 transaction`}><span className="activity-icon stat-mint"><Icon size={17} /></span><p><strong>{item.title}</strong><small>{item.meta}</small></p><time>Block #{item.block}</time><ExternalLink size={15} /></a>; })}</div></div></section>;
 }
 
 function SettingsView({ snapshot }: { snapshot: NetworkSnapshot | null }) {

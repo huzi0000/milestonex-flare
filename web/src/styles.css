@@ -345,13 +345,14 @@ main { flex: 1; width: min(100%, 1510px); margin: 0 auto; padding: clamp(30px, 4
 /* Activity and settings */
 .activity-page { max-width: 940px; margin: 0 auto; }
 .activity-card { border: 1px solid var(--line); border-radius: var(--radius-lg); background: white; padding: 20px; box-shadow: var(--shadow-sm); }
-.activity-list > div { display: flex; align-items: center; gap: 12px; padding: 14px 3px; border-bottom: 1px solid var(--line); }
-.activity-list > div:last-child { border-bottom: 0; }
-.activity-icon { width: 34px; height: 34px; border-radius: 9px; display: grid; place-items: center; }
+.activity-list > a { display: flex; align-items: center; gap: 12px; padding: 14px 10px; margin: 0 -7px; border-bottom: 1px solid var(--line); border-radius: 9px; color: inherit; text-decoration: none; transition: background .18s ease, transform .18s ease; }
+.activity-list > a:hover { background: var(--surface-2); transform: translateX(2px); }
+.activity-list > a:last-child { border-bottom: 0; }
+.activity-icon { width: 34px; height: 34px; flex: 0 0 auto; border-radius: 9px; display: grid; place-items: center; }
 .activity-list p { flex: 1; display: grid; gap: 3px; margin: 0; }
 .activity-list strong { font-size: 10px; }
 .activity-list small, .activity-list time { color: var(--muted); font-size: 8px; }
-.activity-list > svg { color: #94a29b; }
+.activity-list > a > svg { color: var(--brand-accent); }
 .settings-grid { display: grid; gap: 10px; }
 .setting-card { border: 1px solid var(--line); border-radius: var(--radius); background: white; padding: 16px; display: flex; align-items: center; gap: 12px; }
 .setting-card > span { width: 38px; height: 38px; border-radius: 10px; display: grid; place-items: center; background: var(--mint-soft); color: var(--green); }

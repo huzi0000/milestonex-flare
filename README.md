@@ -55,6 +55,7 @@ MilestoneX turns FXRP into programmable project escrow while using Flare's decen
 - Project #1 completed end-to-end on Coston2 with `4.663805 FXRP` funded and released
 - Project #2 repeated the complete lifecycle with `0.469552 FXRP` funded and released
 - Both lifecycle event sets, FXRP transfers, accounting, evidence hashes, and zero remaining escrow balances independently verified
+- Onchain Activity view links all eight verified creation, funding, evidence, and release receipts from Projects #1 and #2
 - Unified milestone-route brand identity shared across dashboard, deployment, lifecycle, project, activity, and network views
 - Persistent dark/light themes, system-preference detection, reduced-motion support, and purposeful interface animation
 - Built-in 60-second Judge Mode covering problem, workflow, Flare integration, and live proof

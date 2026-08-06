@@ -30,6 +30,10 @@ const knownProjectDetails: Record<number, { title: string; description: string }
     title: "MilestoneX launch experience",
     description: "The first fully verified client-to-contractor FXRP milestone lifecycle.",
   },
+  2: {
+    title: "MilestoneX practice project",
+    description: "A second machine-verified lifecycle proving repeatable FXRP settlement.",
+  },
 };
 
 export const projectOneTransactions = {
@@ -37,6 +41,13 @@ export const projectOneTransactions = {
   funded: "0x276027adad29a18938fec5e86488868121849eb9835965c2b9486884c6241415",
   evidence: "0x1d2e1c5f81025f0a0e9bb577b40040d87e4c7ef25a50bfb220de5680b9942121",
   released: "0x35b8db6dc90a44484a855827aca2802260b434119c844274f6c02c79270a5304",
+} as const;
+
+export const projectTwoTransactions = {
+  created: "0x330429e13aa0e6782d70bfe4c3114a19342bf5c5c49eac7654f73d63a335159c",
+  funded: "0xdc2835f38843401546a43536c8ecc33a152646f4c468904ed11c162f33f91bc6",
+  evidence: "0x603c441242aa2b84a72c672aed3c60470cfe9dbfede84e9ca40f3e37ef3f2b52",
+  released: "0x876d2486c05d7397ae97c6f72d0d3c659bfbaf6606be94711fcff6e51b443867",
 } as const;
 
 const verifiedProjectOne: Project = {
@@ -67,8 +78,39 @@ const verifiedProjectOne: Project = {
   ],
 };
 
+const verifiedProjectTwo: Project = {
+  id: 2,
+  title: "MilestoneX practice project",
+  category: "Verified FXRP escrow",
+  client: "0x7BbB50b3e38aac305d94C53CC239cF243E2608EF",
+  contractor: "0x54CBc5f53e16fFFAc586a2B14Bf4D9d40866DF2F",
+  metadataHash: "0x13a5de78e3712104b227b0ed9be382d6aecc2d00acb933b58ae292f266655194",
+  totalUsdCents: 50,
+  lockedFxrp: 0.469552,
+  releasedFxrp: 0.469552,
+  status: "completed",
+  due: "Completed on Coston2",
+  source: "live",
+  contractAddress: deployment.milestoneEscrow,
+  proof: projectTwoTransactions,
+  milestones: [
+    {
+      id: 0,
+      title: "Practice lifecycle delivery",
+      description: "A second machine-verified lifecycle proving repeatable FXRP settlement.",
+      usdCents: 50,
+      evidenceHash: "0x45f078b58a630e8fa8a48532cd65f2f4a0286a741595df51c10cc5a342b0633d",
+      due: "Completed",
+      status: "paid",
+    },
+  ],
+};
+
 export function getVerifiedFallbackProjects(): Project[] {
-  return [{ ...verifiedProjectOne, milestones: verifiedProjectOne.milestones.map((item) => ({ ...item })) }];
+  return [verifiedProjectOne, verifiedProjectTwo].map((project) => ({
+    ...project,
+    milestones: project.milestones.map((item) => ({ ...item })),
+  }));
 }
 
 const projectStatus = (status: number): Project["status"] => {
@@ -143,15 +185,19 @@ export async function getLiveProjects(): Promise<Project[]> {
           proof:
             id === 1
               ? projectOneTransactions
-              : undefined,
+              : id === 2
+                ? projectTwoTransactions
+                : undefined,
           milestones: chainMilestones.map((milestone, index) => ({
             id: index,
             title:
               id === 1
                 ? "Live product delivery"
-                : `Milestone ${index + 1}`,
+                : id === 2
+                  ? "Practice lifecycle delivery"
+                  : `Milestone ${index + 1}`,
             description:
-              id === 1
+              id === 1 || id === 2
                 ? detail.description
                 : "Deliverable committed to the live MilestoneX escrow.",
             usdCents: Number(milestone.usdCents),
