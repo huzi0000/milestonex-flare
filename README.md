@@ -70,13 +70,15 @@ See [`TECHNICAL_SPIKE.md`](./TECHNICAL_SPIKE.md) for the verified addresses and 
 
 ```text
 milestonex-flare/
-├── contracts/                 # Solidity contracts, 18 tests, security review, and scripts
-├── web/                       # Responsive React/Vite application and local visuals
-├── docs/                      # Architecture and submission visuals
-├── validation/                # Optional future research toolkit; no completed interviews claimed
-├── ATTRIBUTIONS.md            # Visual, Flare mark, and third-party attribution
-├── EXECUTION_PLAN.md          # Internal delivery timeline
-├── TECHNICAL_SPIKE.md         # Coston2 feasibility evidence
+├── contracts/                 # Solidity contracts, 18 tests, security review, scripts, and manifests
+├── web/                       # Responsive React/Vite application and local visual assets
+├── docs/                      # Architecture and color-system documentation
+├── ATTRIBUTIONS.md            # Visual, ecosystem-name, and third-party attribution
+├── DEPLOYMENT_VERIFICATION.md # Deployed bytecode, receipt, and linkage evidence
+├── PROJECT_1_VERIFICATION.md  # First complete Coston2 lifecycle
+├── PROJECT_2_VERIFICATION.md  # Repeatability lifecycle
+├── RELEASE_QA.md              # Build, accessibility, dependency, link, and browser QA
+├── TECHNICAL_SPIKE.md         # Initial Coston2 feasibility evidence
 ├── LICENSE
 └── README.md
 ```
@@ -160,9 +162,9 @@ Open `/lifecycle.html` to complete a real two-account testnet flow. Any funded C
 5. Switch to the contractor account and submit an evidence hash.
 6. Switch back to the client and release payment.
 
-The console reads contract state after every transaction, renders a project-specific completion card, and links each receipt to the Coston2 explorer. The exact two-account Project #3 recording procedure is documented in [`DEMO_RECORDING_RUNBOOK.md`](./DEMO_RECORDING_RUNBOOK.md).
+The console reads contract state after every transaction, renders a project-specific completion card, and links each available receipt to the Coston2 explorer.
 
-Responsive and visual QA evidence is documented in [`web/RESPONSIVE_AUDIT.md`](./web/RESPONSIVE_AUDIT.md). Final theme-toggle, explicit dark-surface, overflow, and fallback verification is documented in [`web/THEME_RESPONSIVE_QA.md`](./web/THEME_RESPONSIVE_QA.md). The final build, WCAG, dependency, onchain, link, privacy, and 212-check browser audit is recorded in [`RELEASE_QA.md`](./RELEASE_QA.md).
+The final responsive build, theme persistence, WCAG, dependency, onchain, link, privacy, and 212-check browser audit is recorded in [`RELEASE_QA.md`](./RELEASE_QA.md).
 
 ## Visual system
 
