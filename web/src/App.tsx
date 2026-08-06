@@ -49,9 +49,12 @@ import {
 import { demoProjects, fxrp, money, type Project } from "./lib/data";
 import {
   getLiveProjects,
+  getStoredLifecycleReceipts,
   getVerifiedFallbackProjects,
   projectOneTransactions,
+  projectThreeTransactions,
   projectTwoTransactions,
+  type StoredLifecycleReceipt,
 } from "./lib/milestonex";
 import { deployment } from "./generated/deployment";
 import BrandLogo from "./components/BrandLogo";
@@ -470,8 +473,13 @@ function CreateProject({
   );
 }
 
-function ActivityView() {
-  const items = [
+function ActivityView({ projects }: { projects: Project[] }) {
+  const exactFxrp = (value: number) => `${value.toLocaleString(undefined, { maximumFractionDigits: 6 })} FXRP`;
+  const knownItems = [
+    { icon: HandCoins, title: "Project #3 payment released", meta: "2.859442 FXRP · contractor paid", block: "33,702,166", hash: projectThreeTransactions.released },
+    { icon: FileKey2, title: "Project #3 evidence submitted", meta: "Delivery hash committed on Coston2", block: "33,702,153", hash: projectThreeTransactions.evidence },
+    { icon: ShieldCheck, title: "Project #3 escrow funded", meta: "2.859442 FXRP · FTSOv2 priced", block: "33,702,141", hash: projectThreeTransactions.funded },
+    { icon: BriefcaseBusiness, title: "Project #3 terms committed", meta: "$3.00 milestone · client and contractor recorded", block: "33,702,108", hash: projectThreeTransactions.created },
     { icon: HandCoins, title: "Project #2 payment released", meta: "0.469552 FXRP · contractor paid", block: "33,659,143", hash: projectTwoTransactions.released },
     { icon: FileKey2, title: "Project #2 evidence submitted", meta: "Delivery hash committed on Coston2", block: "33,659,123", hash: projectTwoTransactions.evidence },
     { icon: ShieldCheck, title: "Project #2 escrow funded", meta: "0.469552 FXRP · FTSOv2 priced", block: "33,659,101", hash: projectTwoTransactions.funded },
@@ -481,7 +489,25 @@ function ActivityView() {
     { icon: ShieldCheck, title: "Project #1 escrow funded", meta: "4.663805 FXRP · FTSOv2 priced", block: "33,620,586", hash: projectOneTransactions.funded },
     { icon: BriefcaseBusiness, title: "Project #1 terms committed", meta: "$5.00 milestone · client and contractor recorded", block: "33,620,552", hash: projectOneTransactions.created },
   ];
-  return <section className="activity-page"><div className="page-heading"><div><span className="eyebrow">ONCHAIN ACTIVITY</span><h1>Every action,<br /><em>easy to verify.</em></h1><p>Real creation, funding, evidence, and release transactions from completed MilestoneX projects.</p></div></div><div className="activity-card"><div className="section-heading"><div><h2>Verified receipts</h2><span>8 real Coston2 transactions</span></div><a className="secondary-button compact" href={`${COSTON2_EXPLORER}/address/${deployment.milestoneEscrow}`} target="_blank" rel="noreferrer"><ExternalLink size={14} /> Escrow explorer</a></div><div className="activity-list">{items.map((item) => { const Icon = item.icon; return <a href={`${COSTON2_EXPLORER}/tx/${item.hash}`} target="_blank" rel="noreferrer" key={`${item.title}-${item.hash}`} aria-label={`${item.title}, open Coston2 transaction`}><span className="activity-icon stat-mint"><Icon size={17} /></span><p><strong>{item.title}</strong><small>{item.meta}</small></p><time>Block #{item.block}</time><ExternalLink size={15} /></a>; })}</div></div></section>;
+  const stored = getStoredLifecycleReceipts();
+  const futureItems = Object.entries(stored)
+    .filter(([id]) => !["1", "2", "3"].includes(id))
+    .sort(([a], [b]) => Number(b) - Number(a))
+    .flatMap(([id, receipts]) => {
+      const project = projects.find((item) => item.id === Number(id));
+      const definitions: Array<{ key: keyof typeof receipts; icon: typeof HandCoins; title: string; meta: string }> = [
+        { key: "released", icon: HandCoins, title: `Project #${id} payment released`, meta: project ? `${exactFxrp(project.releasedFxrp)} · contractor paid` : "Contractor payment recorded" },
+        { key: "evidence", icon: FileKey2, title: `Project #${id} evidence submitted`, meta: "Delivery hash committed on Coston2" },
+        { key: "funded", icon: ShieldCheck, title: `Project #${id} escrow funded`, meta: project ? `${exactFxrp(project.lockedFxrp)} · FTSOv2 priced` : "FXRP funding recorded" },
+        { key: "created", icon: BriefcaseBusiness, title: `Project #${id} terms committed`, meta: project ? `${money(project.totalUsdCents)} milestone · client and contractor recorded` : "Project roles and terms recorded" },
+      ];
+      return definitions.flatMap((definition) => {
+        const receipt = receipts[definition.key] as StoredLifecycleReceipt | undefined;
+        return receipt ? [{ ...definition, hash: receipt.hash, block: receipt.blockNumber.toLocaleString() }] : [];
+      });
+    });
+  const items = [...futureItems, ...knownItems];
+  return <section className="activity-page"><div className="page-heading"><div><span className="eyebrow">ONCHAIN ACTIVITY</span><h1>Every action,<br /><em>easy to verify.</em></h1><p>Real creation, funding, evidence, and release transactions from MilestoneX projects.</p></div></div><div className="activity-card"><div className="section-heading"><div><h2>Onchain receipts</h2><span>{items.length} Coston2 transactions</span></div><a className="secondary-button compact" href={`${COSTON2_EXPLORER}/address/${deployment.milestoneEscrow}`} target="_blank" rel="noreferrer"><ExternalLink size={14} /> Escrow explorer</a></div><div className="activity-list">{items.map((item) => { const Icon = item.icon; return <a href={`${COSTON2_EXPLORER}/tx/${item.hash}`} target="_blank" rel="noreferrer" key={`${item.title}-${item.hash}`} aria-label={`${item.title}, open Coston2 transaction`}><span className="activity-icon stat-mint"><Icon size={17} /></span><p><strong>{item.title}</strong><small>{item.meta}</small></p><time>Block #{item.block}</time><ExternalLink size={15} /></a>; })}</div></div></section>;
 }
 
 function SettingsView({ snapshot }: { snapshot: NetworkSnapshot | null }) {
@@ -586,7 +612,7 @@ export default function App() {
           {view === "dashboard" && <Dashboard projects={visibleProjects} snapshot={snapshot} loadingNetwork={networkLoading} liveLoading={liveLoading} onRefreshNetwork={refreshNetwork} onOpenProject={openProject} />}
           {view === "project" && <ProjectDetail project={selected} onBack={() => changeView("dashboard")} />}
           {view === "create" && <CreateProject xrpPrice={snapshot?.xrpUsdPrice ?? 1.07} onCancel={() => changeView("dashboard")} onCreated={(project) => { setProjects((current) => [project, ...current]); openProject(project); }} />}
-          {view === "activity" && <ActivityView />}
+          {view === "activity" && <ActivityView projects={liveProjects} />}
           {view === "settings" && <SettingsView snapshot={snapshot} />}
         </main>
         <footer><BrandLogo /><span className="footer-flare"><span className="footer-flare-icon"><Blocks size={14} /></span><small>Built on Flare</small></span><p>Experimental Coston2 prototype. Never use real funds.</p><div><a href="https://github.com/huzi0000/milestonex-flare" target="_blank" rel="noreferrer">GitHub <ExternalLink size={12} /></a><a href={COSTON2_EXPLORER} target="_blank" rel="noreferrer">Explorer <ExternalLink size={12} /></a><a href={COSTON2_FAUCET} target="_blank" rel="noreferrer">Faucet <ExternalLink size={12} /></a></div></footer>

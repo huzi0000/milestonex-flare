@@ -82,7 +82,7 @@ Verified linkage:
 - Escrow → funding forwarder: match
 - FXRP decimals: 6
 - EIP-712 domain: `MilestoneXFundingForwarder`, version `1`, chain `114`
-- Next project ID: `3`
+- Next project ID: `4`
 
 ## Lifecycle verification
 
@@ -90,12 +90,13 @@ Verified linkage:
 |---|---:|---:|---:|---|---|---:|
 | #1 | $5.00 | 4.663805 FXRP | 4.663805 FXRP | Completed | Exact transfer found | 0 FXRP |
 | #2 | $0.50 | 0.469552 FXRP | 0.469552 FXRP | Completed | Exact transfer found | 0 FXRP |
+| #3 | $3.00 | 2.859442 FXRP | 2.859442 FXRP | Completed | Exact transfer found | 0 FXRP |
 
-Both projects have submitted evidence, released milestones, successful release receipts, exact contractor transfers, and complete accounting.
+All three projects have submitted evidence, released milestones, successful release receipts, exact contractor transfers, and complete accounting.
 
 ## Public-link and interaction audit
 
-- All eight Activity transaction links returned successfully.
+- All twelve verified Activity transaction links for Projects #1–3 returned successfully; future lifecycle receipts are persisted locally for the same browser.
 - All three deployed contract explorer links returned successfully.
 - Main, lifecycle, deployment, favicon, Open Graph image, and hero visual returned successfully.
 - Official Coston2 faucet returned successfully.
@@ -103,7 +104,7 @@ Both projects have submitted evidence, released milestones, successful release r
 - Source scan found no direct dead buttons or anchors.
 - Source scan found no committed secret value, analytics SDK, telemetry beacon, cookie API, IndexedDB use, or session storage.
 
-Expected local browser storage is limited to theme, selected lifecycle project ID, and an optional public deployment manifest.
+Expected local browser storage is limited to theme, selected lifecycle project ID, public lifecycle receipt hashes, and an optional public deployment manifest.
 
 ## Issues found and corrected during release QA
 

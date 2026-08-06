@@ -24,6 +24,37 @@ type ChainMilestone = {
 };
 
 const zeroHash = `0x${"0".repeat(64)}`;
+const RECEIPT_STORAGE_KEY = "milestonex:lifecycle-receipts";
+
+export type LifecycleReceiptKey = "created" | "funded" | "evidence" | "released";
+export type StoredLifecycleReceipt = { hash: Hash; blockNumber: number };
+export type StoredLifecycleReceipts = Record<string, Partial<Record<LifecycleReceiptKey, StoredLifecycleReceipt>>>;
+
+export function getStoredLifecycleReceipts(): StoredLifecycleReceipts {
+  if (typeof window === "undefined") return {};
+  try {
+    const parsed = JSON.parse(localStorage.getItem(RECEIPT_STORAGE_KEY) ?? "{}");
+    return parsed && typeof parsed === "object" ? parsed as StoredLifecycleReceipts : {};
+  } catch {
+    return {};
+  }
+}
+
+export function saveLifecycleReceipt(
+  projectId: bigint,
+  key: LifecycleReceiptKey,
+  hash: Hash,
+  blockNumber: bigint,
+) {
+  if (typeof window === "undefined") return;
+  const receipts = getStoredLifecycleReceipts();
+  const id = projectId.toString();
+  receipts[id] = {
+    ...(receipts[id] ?? {}),
+    [key]: { hash, blockNumber: Number(blockNumber) },
+  };
+  localStorage.setItem(RECEIPT_STORAGE_KEY, JSON.stringify(receipts));
+}
 
 const knownProjectDetails: Record<number, { title: string; description: string }> = {
   1: {
@@ -33,6 +64,10 @@ const knownProjectDetails: Record<number, { title: string; description: string }
   2: {
     title: "MilestoneX practice project",
     description: "A second machine-verified lifecycle proving repeatable FXRP settlement.",
+  },
+  3: {
+    title: "MilestoneX demo project #3",
+    description: "A third machine-verified lifecycle completed with fresh client and contractor accounts.",
   },
 };
 
@@ -48,6 +83,13 @@ export const projectTwoTransactions = {
   funded: "0xdc2835f38843401546a43536c8ecc33a152646f4c468904ed11c162f33f91bc6",
   evidence: "0x603c441242aa2b84a72c672aed3c60470cfe9dbfede84e9ca40f3e37ef3f2b52",
   released: "0x876d2486c05d7397ae97c6f72d0d3c659bfbaf6606be94711fcff6e51b443867",
+} as const;
+
+export const projectThreeTransactions = {
+  created: "0x5fdf4ee0855dda674c6ac7494fdd5d50e9f4ea9af54afe6fbd395ee7e4531131",
+  funded: "0x9e240aa724f1372e4d59ce4efe043356e8cd601f54ecde004cc4d580a83fecb1",
+  evidence: "0xfa8958c50418b7847396c59baacb61cc657fb72c87cf4221d9c22d6b2ed62b4b",
+  released: "0x4fc3432a6fa2f9199f329ae6f457c6aa81b0552113432db4bf28b7fd54c6826b",
 } as const;
 
 const verifiedProjectOne: Project = {
@@ -106,8 +148,36 @@ const verifiedProjectTwo: Project = {
   ],
 };
 
+const verifiedProjectThree: Project = {
+  id: 3,
+  title: "MilestoneX demo project #3",
+  category: "Verified FXRP escrow",
+  client: "0xfCbDDcBA8b0A976f9117c6af3867480d626f176C",
+  contractor: "0x772093a7Fe4D33774Aa49F13B97E8e18E271B0cf",
+  metadataHash: "0x1e985f91e4eb5e5352e472e5d8389667c1b1365b291b8523be000e9402a3bb10",
+  totalUsdCents: 300,
+  lockedFxrp: 2.859442,
+  releasedFxrp: 2.859442,
+  status: "completed",
+  due: "Completed on Coston2",
+  source: "live",
+  contractAddress: deployment.milestoneEscrow,
+  proof: projectThreeTransactions,
+  milestones: [
+    {
+      id: 0,
+      title: "Demo lifecycle delivery",
+      description: "A third machine-verified lifecycle completed with fresh client and contractor accounts.",
+      usdCents: 300,
+      evidenceHash: "0xf1ea7530d284b77f9bb897084864641f260844997d6c42cc6ecf76ceb4354538",
+      due: "Completed",
+      status: "paid",
+    },
+  ],
+};
+
 export function getVerifiedFallbackProjects(): Project[] {
-  return [verifiedProjectOne, verifiedProjectTwo].map((project) => ({
+  return [verifiedProjectOne, verifiedProjectTwo, verifiedProjectThree].map((project) => ({
     ...project,
     milestones: project.milestones.map((item) => ({ ...item })),
   }));
@@ -187,7 +257,9 @@ export async function getLiveProjects(): Promise<Project[]> {
               ? projectOneTransactions
               : id === 2
                 ? projectTwoTransactions
-                : undefined,
+                : id === 3
+                  ? projectThreeTransactions
+                  : undefined,
           milestones: chainMilestones.map((milestone, index) => ({
             id: index,
             title:
@@ -195,9 +267,11 @@ export async function getLiveProjects(): Promise<Project[]> {
                 ? "Live product delivery"
                 : id === 2
                   ? "Practice lifecycle delivery"
-                  : `Milestone ${index + 1}`,
+                  : id === 3
+                    ? "Demo lifecycle delivery"
+                    : `Milestone ${index + 1}`,
             description:
-              id === 1 || id === 2
+              id === 1 || id === 2 || id === 3
                 ? detail.description
                 : "Deliverable committed to the live MilestoneX escrow.",
             usdCents: Number(milestone.usdCents),

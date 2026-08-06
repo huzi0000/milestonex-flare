@@ -40,7 +40,10 @@ import { deployment } from "./generated/deployment";
 import {
   getVerifiedFallbackProjects,
   projectOneTransactions,
+  projectThreeTransactions,
   projectTwoTransactions,
+  saveLifecycleReceipt,
+  type LifecycleReceiptKey,
 } from "./lib/milestonex";
 import {
   COSTON2_CHAIN_ID,
@@ -169,7 +172,9 @@ export default function LifecycleApp() {
       ? projectOneTransactions
       : projectId === 2n
         ? projectTwoTransactions
-        : null;
+        : projectId === 3n
+          ? projectThreeTransactions
+          : null;
   const activityHash = (label: string) =>
     activity.find((item) => item.label === label && item.status === "success")?.hash;
   const proofTransactions = {
@@ -188,7 +193,7 @@ export default function LifecycleApp() {
   const projectFunded = project?.fundedFxrp ?? 0n;
   const projectReleased = project?.releasedFxrp ?? 0n;
   const projectRemainder = projectFunded - projectReleased;
-  const machineVerified = projectId === 1n || projectId === 2n;
+  const machineVerified = projectId === 1n || projectId === 2n || projectId === 3n;
 
   const refresh = async (connected = account, selectedId = projectId) => {
     setLoading(true);
@@ -338,6 +343,13 @@ export default function LifecycleApp() {
     }
   };
 
+  const receiptKeyByLabel: Partial<Record<string, LifecycleReceiptKey>> = {
+    "Create project": "created",
+    "Fund escrow": "funded",
+    "Submit evidence": "evidence",
+    "Release milestone": "released",
+  };
+
   const sendTransaction = async (label: string, action: (wallet: ReturnType<typeof createWalletClient>, account: Address) => Promise<Hash>) => {
     if (!account || !window.ethereum) return null;
     setBusy(label);
@@ -351,6 +363,11 @@ export default function LifecycleApp() {
       const receipt = await publicClient.waitForTransactionReceipt({ hash, confirmations: 1 });
       if (receipt.status !== "success") throw new Error(`${label} transaction reverted.`);
       setActivity((items) => items.map((item) => item.hash === hash ? { ...item, status: "success" } : item));
+      const receiptKey = receiptKeyByLabel[label];
+      const receiptProjectId = projectIdRef.current ?? projectId;
+      if (receiptKey && receiptProjectId) {
+        saveLifecycleReceipt(receiptProjectId, receiptKey, hash, receipt.blockNumber);
+      }
       await refresh(account, projectId);
       return hash;
     } catch (caught) {
@@ -436,6 +453,7 @@ export default function LifecycleApp() {
     const id = nextProjectId;
     localStorage.setItem(STORAGE_PROJECT, id.toString());
     setProjectId(id);
+    projectIdRef.current = id;
     setProject(null);
     setMilestone(null);
     setAllowance(0n);

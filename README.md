@@ -54,8 +54,9 @@ MilestoneX turns FXRP into programmable project escrow while using Flare's decen
 - Guided two-account lifecycle console implemented for real create, approve, fund, evidence, and release transactions
 - Project #1 completed end-to-end on Coston2 with `4.663805 FXRP` funded and released
 - Project #2 repeated the complete lifecycle with `0.469552 FXRP` funded and released
-- Both lifecycle event sets, FXRP transfers, accounting, evidence hashes, and zero remaining escrow balances independently verified
-- Onchain Activity view links all eight verified creation, funding, evidence, and release receipts from Projects #1 and #2
+- Project #3 repeated the flow with fresh accounts and `2.859442 FXRP` funded and released
+- All three lifecycle event sets, FXRP transfers, accounting, evidence hashes, and zero remaining project obligations independently verified
+- Onchain Activity view links all twelve verified creation, funding, evidence, and release receipts from Projects #1–3 and persists future browser-session receipts
 - Unified milestone-route brand identity shared across dashboard, deployment, lifecycle, project, activity, and network views
 - Persistent dark/light themes, system-preference detection, reduced-motion support, and purposeful interface animation
 - Built-in 60-second Judge Mode covering problem, workflow, Flare integration, and live proof
@@ -77,6 +78,7 @@ milestonex-flare/
 ├── DEPLOYMENT_VERIFICATION.md # Deployed bytecode, receipt, and linkage evidence
 ├── PROJECT_1_VERIFICATION.md  # First complete Coston2 lifecycle
 ├── PROJECT_2_VERIFICATION.md  # Repeatability lifecycle
+├── PROJECT_3_VERIFICATION.md  # Fresh-account lifecycle
 ├── RELEASE_QA.md              # Build, accessibility, dependency, link, and browser QA
 ├── TECHNICAL_SPIKE.md         # Initial Coston2 feasibility evidence
 ├── LICENSE
@@ -110,7 +112,7 @@ This check does not need a private key.
 
 See [`DEPLOYMENT_VERIFICATION.md`](./DEPLOYMENT_VERIFICATION.md) and [`contracts/deployments/coston2-verification.json`](./contracts/deployments/coston2-verification.json) for independent receipt, bytecode, linkage, and oracle checks.
 
-The first real workflow is documented in [`PROJECT_1_VERIFICATION.md`](./PROJECT_1_VERIFICATION.md) with machine-readable evidence at [`contracts/deployments/project-1-verification.json`](./contracts/deployments/project-1-verification.json). Repeatability is documented in [`PROJECT_2_VERIFICATION.md`](./PROJECT_2_VERIFICATION.md) with machine-readable evidence at [`contracts/deployments/project-2-verification.json`](./contracts/deployments/project-2-verification.json).
+The first real workflow is documented in [`PROJECT_1_VERIFICATION.md`](./PROJECT_1_VERIFICATION.md), repeatability in [`PROJECT_2_VERIFICATION.md`](./PROJECT_2_VERIFICATION.md), and the fresh-account flow in [`PROJECT_3_VERIFICATION.md`](./PROJECT_3_VERIFICATION.md). Matching machine-readable evidence is published under `contracts/deployments/project-{1,2,3}-verification.json`.
 
 ## Architecture
 
