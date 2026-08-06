@@ -326,7 +326,7 @@ export default function DeployApp() {
                   <div className="deploy-step-copy">
                     <div><h3>{step.name}</h3><span>{step.state === "signing" ? "Confirm in wallet" : step.state === "confirming" ? "Waiting for Coston2" : step.state === "complete" ? "Deployed & verified" : step.state === "error" ? "Action required" : "Ready"}</span></div>
                     <p>{step.description}</p>
-                    {step.address && <div className="deploy-address"><code>{step.address}</code><button onClick={() => navigator.clipboard.writeText(step.address!)}><Clipboard size={13} /></button><a href={explorerAddress(step.address)} target="_blank" rel="noreferrer"><ExternalLink size={13} /></a></div>}
+                    {step.address && <div className="deploy-address"><code>{step.address}</code><button onClick={() => navigator.clipboard.writeText(step.address!)} aria-label={`Copy ${step.name} address`} title={`Copy ${step.name} address`}><Clipboard size={13} /></button><a href={explorerAddress(step.address)} target="_blank" rel="noreferrer" aria-label={`Open ${step.name} in Coston2 Explorer`}><ExternalLink size={13} /></a></div>}
                     {step.txHash && step.state !== "complete" && <a className="pending-tx" href={explorerTx(step.txHash)} target="_blank" rel="noreferrer">View pending transaction <ExternalLink size={12} /></a>}
                     {step.error && <small className="deploy-step-error">{step.error}</small>}
                   </div>
@@ -360,7 +360,7 @@ export default function DeployApp() {
             </article>
 
             <article className="dependency-card">
-              <div className="aside-title"><Blocks size={17} /><span>LIVE DEPENDENCIES</span><button onClick={loadSnapshot}><RefreshCw size={13} /></button></div>
+              <div className="aside-title"><Blocks size={17} /><span>LIVE DEPENDENCIES</span><button onClick={loadSnapshot} aria-label="Refresh live dependencies" title="Refresh live dependencies"><RefreshCw size={13} /></button></div>
               <div className="dependency-row"><span><CircleDollarSign size={15} /></span><p><strong>Test FXRP</strong><small>{snapshot ? shortAddress(snapshot.fxrpAddress) : "Resolving…"}</small></p>{snapshot && <Check size={15} />}</div>
               <div className="dependency-row"><span><Gauge size={15} /></span><p><strong>XRP / USD</strong><small>{snapshot ? `$${snapshot.xrpUsdPrice.toFixed(5)}` : "Reading FTSOv2…"}</small></p>{snapshot && <Check size={15} />}</div>
               <div className="dependency-row"><span><Zap size={15} /></span><p><strong>Latest block</strong><small>{snapshot ? `#${snapshot.blockNumber}` : "Connecting…"}</small></p>{snapshot && <Check size={15} />}</div>

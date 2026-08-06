@@ -5,6 +5,16 @@
 **Safety buffer:** 6 hours 59 minutes  
 **Repository:** https://github.com/huzi0000/milestonex-flare
 
+## Delivery status update — August 6
+
+This file preserves the original ten-day plan. It is not a claim that every planned stretch task shipped.
+
+**Delivered:** deployed Coston2 contracts, FXRP escrow, FTSOv2 pricing, direct and EIP-712-authorized funding contracts, role-controlled evidence and release, mutual cancellation logic, two machine-verified lifecycles, 18 automated contract/security tests, responsive public application, deployment/lifecycle proof pages, live activity receipts, faucet onboarding, architecture, security review, and reproducibility materials.
+
+**Intentionally deferred or documented as roadmap:** hosted relayer service, backend event indexer, production rate limiting, cancellation/dispute UI, timeout-based unilateral recovery, professional audit, mainnet deployment, WalletConnect/multi-wallet discovery, and independent user interviews. The public application labels the dashboard project builder as a UI preview; real writes occur in the dedicated lifecycle console. No user-validation or traction claim is made.
+
+**Still required before submission:** edited demo video, final DoraHacks copy, short roadmap, AI-assistance disclosure, final link/compliance audit, and BUIDL submission.
+
 ## Current position — August 4
 
 - [x] DoraHacks account created

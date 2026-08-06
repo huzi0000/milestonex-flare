@@ -118,7 +118,7 @@ main { flex: 1; width: min(100%, 1510px); margin: 0 auto; padding: clamp(30px, 4
 .stat-violet { background: #f1ebff; color: #7655b5; }
 .stat-card p { color: var(--muted); font-size: 10px; font-weight: 680; margin: 0; }
 .stat-card h3 { font-size: clamp(19px, 2vw, 25px); letter-spacing: -.04em; margin: 7px 0 5px; overflow: hidden; text-overflow: ellipsis; }
-.stat-card > span { color: #829088; font-size: 9px; }
+.stat-card > span { color: var(--muted); font-size: 9px; }
 .skeleton { background: linear-gradient(90deg,#edf1ee 25%,#f7f9f8 45%,#edf1ee 65%); background-size: 300% 100%; animation: shimmer 1.5s infinite; border-radius: 5px; }
 .stat-skeleton { height: 25px; width: 75%; margin: 8px 0 7px; }
 @keyframes shimmer { to { background-position: -300% 0; } }
@@ -176,8 +176,8 @@ main { flex: 1; width: min(100%, 1510px); margin: 0 auto; padding: clamp(30px, 4
 .align-right { text-align: right; }
 .progress-line { height: 4px; border-radius: 9px; background: #edf1ee; overflow: hidden; }
 .progress-line span { height: 100%; display: block; background: var(--green); border-radius: inherit; min-width: 3px; }
-.project-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; color: #78877f; font-size: 8px; }
-.project-footer span:last-child { display: flex; align-items: center; gap: 4px; color: #4f6057; }
+.project-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; color: var(--muted); font-size: 8px; }
+.project-footer span:last-child { display: flex; align-items: center; gap: 4px; color: var(--muted); }
 .dashboard-grid aside { display: grid; gap: 12px; }
 .network-card { background: var(--deep); color: white; border-radius: var(--radius-lg); padding: 20px; box-shadow: 0 16px 35px rgba(8,25,19,.16); position: relative; overflow: hidden; }
 .network-card::before { content: ""; position: absolute; width: 230px; height: 230px; border-radius: 50%; background: radial-gradient(circle,rgba(128,231,187,.12),transparent 68%); right: -110px; top: -100px; pointer-events: none; }
@@ -202,7 +202,7 @@ main { flex: 1; width: min(100%, 1510px); margin: 0 auto; padding: clamp(30px, 4
 .insight-card > div:nth-child(2) { display: grid; gap: 2px; flex: 1; }
 .insight-card span { color: #96703a; font-size: 8px; text-transform: uppercase; letter-spacing: .06em; font-weight: 750; }
 .insight-card strong { font-size: 10px; }
-.insight-card p { color: #8a7b62; font-size: 8px; line-height: 1.35; margin: 0; }
+.insight-card p { color: var(--muted); font-size: 8px; line-height: 1.35; margin: 0; }
 .insight-card > svg { color: #b58a48; }
 
 /* Project detail */

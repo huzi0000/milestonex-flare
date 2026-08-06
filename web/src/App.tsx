@@ -574,7 +574,7 @@ export default function App() {
   return (
     <div className="app-shell">
       <aside className={`sidebar ${mobileNav ? "open" : ""}`}>
-        <div className="sidebar-head"><BrandLogo tone="light" /><button className="mobile-close" onClick={() => setMobileNav(false)}><X size={20} /></button></div>
+        <div className="sidebar-head"><BrandLogo tone="light" /><button className="mobile-close" onClick={() => setMobileNav(false)} aria-label="Close navigation"><X size={20} /></button></div>
         <nav>{navItems.map(({ id, label, icon: Icon }) => <button key={id} className={view === id || (id === "dashboard" && view === "project") ? "active" : ""} onClick={() => changeView(id)}><Icon size={18} /><span>{label}</span></button>)}<span className="nav-label">PROJECTS</span>{sidebarProjects.slice(0, 3).map((project) => <button className={view === "project" && selected.id === project.id ? "active project-nav" : "project-nav"} key={`${project.source ?? "demo"}-${project.id}`} onClick={() => openProject(project)}><span className={`project-dot project-dot-${project.status}`} /><span>{project.title}</span></button>)}</nav>
         <div className="sidebar-bottom"><div className="build-card"><span><BadgeCheck size={15} /> PUBLIC TESTNET PROOF</span><strong>Verified on Coston2</strong><p>Deployed contracts and end-to-end FXRP settlement with public receipts.</p><div><i style={{ width: "100%" }} /></div></div><a className="support-link" href="https://github.com/huzi0000/milestonex-flare#readme" target="_blank" rel="noreferrer"><Info size={17} /> Documentation<ExternalLink size={13} /></a></div>
       </aside>

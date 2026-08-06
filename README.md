@@ -60,6 +60,7 @@ MilestoneX turns FXRP into programmable project escrow while using Flare's decen
 - Persistent dark/light themes, system-preference detection, reduced-motion support, and purposeful interface animation
 - Built-in 60-second Judge Mode covering problem, workflow, Flare integration, and live proof
 - Responsive QA passed in both themes at 320, 360, 390, 430, 768, 900, 1024, 1280, and 1440 px
+- Release-candidate browser audit passed 212 checks with zero failures; automated WCAG A/AA audit reports zero violations across ten page/theme combinations
 - Open Graph/Twitter social preview and final favicon assets included
 - Security expansion and technical evidence complete; final demo and submission assets in progress
 
@@ -161,7 +162,7 @@ Open `/lifecycle.html` to complete a real two-account testnet flow. Any funded C
 
 The console reads contract state after every transaction and links each receipt to the Coston2 explorer.
 
-Responsive and visual QA evidence is documented in [`web/RESPONSIVE_AUDIT.md`](./web/RESPONSIVE_AUDIT.md). Final theme-toggle, explicit dark-surface, overflow, and fallback verification is documented in [`web/THEME_RESPONSIVE_QA.md`](./web/THEME_RESPONSIVE_QA.md).
+Responsive and visual QA evidence is documented in [`web/RESPONSIVE_AUDIT.md`](./web/RESPONSIVE_AUDIT.md). Final theme-toggle, explicit dark-surface, overflow, and fallback verification is documented in [`web/THEME_RESPONSIVE_QA.md`](./web/THEME_RESPONSIVE_QA.md). The final build, WCAG, dependency, onchain, link, privacy, and 212-check browser audit is recorded in [`RELEASE_QA.md`](./RELEASE_QA.md).
 
 ## Visual system
 

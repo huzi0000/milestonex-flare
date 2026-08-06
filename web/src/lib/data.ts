@@ -156,7 +156,8 @@ export const money = (cents: number) =>
   new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
-    maximumFractionDigits: 0,
+    minimumFractionDigits: Math.abs(cents) % 100 === 0 ? 0 : 2,
+    maximumFractionDigits: 2,
   }).format(cents / 100);
 
 export const fxrp = (value: number) =>

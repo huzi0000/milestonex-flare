@@ -406,11 +406,11 @@ export default function LifecycleApp() {
       <main className="life-main">
         <section className="life-hero">
           <div><span className="life-eyebrow"><Zap size={13} /> END-TO-END PROOF</span><h1>One project.<br /><em>Every promise verified.</em></h1><p>Complete the first real MilestoneX lifecycle with two test accounts. Every action below writes to the deployed escrow contract.</p></div>
-          <div className="life-contract"><ShieldCheck size={20} /><p><span>ESCROW CONTRACT</span><strong>{shortAddress(deployment.milestoneEscrow)}</strong></p><a href={addressUrl(deployment.milestoneEscrow)} target="_blank" rel="noreferrer"><ExternalLink size={14} /></a></div>
+          <div className="life-contract"><ShieldCheck size={20} /><p><span>ESCROW CONTRACT</span><strong>{shortAddress(deployment.milestoneEscrow)}</strong></p><a href={addressUrl(deployment.milestoneEscrow)} target="_blank" rel="noreferrer" aria-label="Open escrow contract in Coston2 Explorer"><ExternalLink size={14} /></a></div>
         </section>
 
         <section className="life-progress">
-          <ProgressStep number={1} label="Connect" complete={Boolean(account)} active={currentStep === 1} />
+          <ProgressStep number={1} label="Connect" complete={Boolean(account) || projectCreated} active={currentStep === 1} />
           <ProgressStep number={2} label="Create" complete={projectCreated} active={currentStep === 2} />
           <ProgressStep number={3} label="Approve" complete={approved || funded} active={currentStep === 3} />
           <ProgressStep number={4} label="Fund" complete={funded} active={currentStep === 4} />
@@ -471,7 +471,7 @@ export default function LifecycleApp() {
 
           <aside className="life-aside">
             <article className="life-summary">
-              <div className="life-aside-title"><Gauge size={16} /><span>LIVE CONTRACT STATE</span><button onClick={() => refresh()}><RefreshCw size={13} className={loading ? "life-spin" : ""} /></button></div>
+              <div className="life-aside-title"><Gauge size={16} /><span>LIVE CONTRACT STATE</span><button onClick={() => refresh()} aria-label="Refresh live contract state" title="Refresh live contract state"><RefreshCw size={13} className={loading ? "life-spin" : ""} /></button></div>
               <div><span>Project</span><strong>{projectId ? `#${projectId}` : "Not created"}</strong></div>
               <div><span>Status</span><strong>{STATUS_LABELS[project?.status ?? 0]}</strong></div>
               <div><span>Escrowed</span><strong>{formatFxrp((project?.fundedFxrp ?? 0n) - (project?.releasedFxrp ?? 0n))}</strong></div>

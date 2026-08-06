@@ -24,7 +24,7 @@ button, input, textarea { font: inherit; color: inherit; }
 .life-contract strong { color: var(--ink); font-size: 10px; }
 .life-contract a { color: var(--green); display: grid; }
 .life-progress { display: grid; grid-template-columns: repeat(6, 1fr); border: 1px solid var(--line); background: white; border-radius: 13px; padding: 13px 16px; margin-bottom: 16px; box-shadow: var(--shadow-sm); }
-.life-progress-step { display: flex; align-items: center; justify-content: center; gap: 7px; color: #87938d; position: relative; }
+.life-progress-step { display: flex; align-items: center; justify-content: center; gap: 7px; color: var(--muted); position: relative; }
 .life-progress-step:not(:last-child)::after { content: ""; position: absolute; width: 1px; height: 22px; background: var(--line); right: 0; }
 .life-progress-step > span { width: 23px; height: 23px; border-radius: 99px; display: grid; place-items: center; border: 1px solid #cbd5d0; background: #fafbfa; font-size: 8px; font-weight: 800; }
 .life-progress-step p { font-size: 8px; font-weight: 750; }
@@ -100,9 +100,9 @@ button, input, textarea { font: inherit; color: inherit; }
 .life-summary > div strong { font-size: 8px; }
 .new-project-button { width: 100%; margin-top: 10px; min-height: 38px; padding: 0 10px; border: 1px solid var(--brand-accent); border-radius: 8px; background: var(--brand-accent); color: var(--button-ink); display: flex; align-items: center; gap: 7px; font-size: 8px; font-weight: 800; cursor: pointer; }
 .new-project-button span { flex: 1; text-align: left; }
-.new-project-button small { font-size: 7px; opacity: .75; }
+.new-project-button small { color: inherit !important; font-size: 7px; opacity: 1; }
 .new-project-button:disabled { opacity: .45; cursor: wait; }
-.recover-button { width: 100%; margin-top: 8px; border: 1px solid var(--line); background: #fafcfb; border-radius: 7px; min-height: 31px; color: var(--green); font-size: 7px; cursor: pointer; }
+.recover-button { width: 100%; margin-top: 8px; border: 1px solid var(--line); background: var(--surface-2); border-radius: 7px; min-height: 31px; color: var(--brand-accent); font-size: 7px; font-weight: 700; cursor: pointer; }
 .life-faucet { margin-top: 8px; min-height: 48px; padding: 9px 10px; display: flex; align-items: center; gap: 8px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface-2); color: var(--green); text-decoration: none; }
 .life-faucet:hover { border-color: var(--line-strong); transform: translateY(-1px); }
 .life-faucet > span { flex: 1; min-width: 0; display: grid; gap: 2px; }
