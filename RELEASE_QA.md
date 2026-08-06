@@ -125,7 +125,7 @@ Expected local browser storage is limited to theme, selected lifecycle project I
 - Mutual-cancellation liveness risk
 - No timeout/unilateral recovery path
 - Hosted relayer not included
-- Main dashboard builder is a clearly labelled UI preview; the lifecycle console performs real writes
+- The main Create on Coston2 CTA performs real writes through the lifecycle console; that browser workflow currently exposes one milestone per project while the contract supports and tests 1–12
 - Evidence content remains offchain; only hashes are committed
 
 See `contracts/SECURITY_REVIEW.md` for the complete threat model and limitations.

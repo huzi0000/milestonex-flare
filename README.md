@@ -132,7 +132,7 @@ Production validation:
 npm run build
 ```
 
-The current UI reads public Coston2 and FTSOv2 data directly. The dedicated lifecycle console performs real testnet writes against the published deployment, while the main dashboard project builder is clearly labelled as a UI preview.
+The current UI reads public Coston2 and FTSOv2 data directly. The main **Create on Coston2** CTA opens the dedicated lifecycle console, which performs real testnet writes against the published deployment. The real browser workflow currently creates one milestone per project; the contract's 1–12 milestone behavior is covered by the contract test suite.
 
 ### Browser deployment console
 
