@@ -115,6 +115,7 @@ Expected local browser storage is limited to theme, selected lifecycle project I
 6. Some legacy muted labels missed contrast in both themes.
 7. Activity originally contained illustrative rows; it now uses eight real Coston2 receipts.
 8. Network status previously reused a project-only “Funds protected” pill; all network dependencies now use consistent verification marks.
+9. The completed lifecycle proof card was hardcoded to Project #1; it now renders the selected project's real USD value, FXRP accounting, verification state, and current-session or known receipt hashes.
 
 ## Known product limitations
 

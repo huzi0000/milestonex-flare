@@ -160,7 +160,7 @@ Open `/lifecycle.html` to complete a real two-account testnet flow. Any funded C
 5. Switch to the contractor account and submit an evidence hash.
 6. Switch back to the client and release payment.
 
-The console reads contract state after every transaction and links each receipt to the Coston2 explorer.
+The console reads contract state after every transaction, renders a project-specific completion card, and links each receipt to the Coston2 explorer. The exact two-account Project #3 recording procedure is documented in [`DEMO_RECORDING_RUNBOOK.md`](./DEMO_RECORDING_RUNBOOK.md).
 
 Responsive and visual QA evidence is documented in [`web/RESPONSIVE_AUDIT.md`](./web/RESPONSIVE_AUDIT.md). Final theme-toggle, explicit dark-surface, overflow, and fallback verification is documented in [`web/THEME_RESPONSIVE_QA.md`](./web/THEME_RESPONSIVE_QA.md). The final build, WCAG, dependency, onchain, link, privacy, and 212-check browser audit is recorded in [`RELEASE_QA.md`](./RELEASE_QA.md).
 

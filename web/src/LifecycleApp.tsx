@@ -37,7 +37,11 @@ import BrandLogo from "./components/BrandLogo";
 import ThemeToggle from "./components/ThemeToggle";
 import { MilestoneEscrowArtifact } from "./generated/contracts";
 import { deployment } from "./generated/deployment";
-import { getVerifiedFallbackProjects, projectOneTransactions } from "./lib/milestonex";
+import {
+  getVerifiedFallbackProjects,
+  projectOneTransactions,
+  projectTwoTransactions,
+} from "./lib/milestonex";
 import {
   COSTON2_CHAIN_ID,
   COSTON2_EXPLORER,
@@ -75,6 +79,13 @@ type ActivityItem = {
   status: "pending" | "success" | "error";
 };
 
+type ProofTransactions = {
+  readonly created: Hash;
+  readonly funded: Hash;
+  readonly evidence: Hash;
+  readonly released: Hash;
+};
+
 const tokenAbi = parseAbi([
   "function approve(address spender, uint256 amount) returns (bool)",
   "function allowance(address owner, address spender) view returns (uint256)",
@@ -91,7 +102,11 @@ const txUrl = (hash: Hash) => `${COSTON2_EXPLORER}/tx/${hash}`;
 const addressUrl = (address: Address) => `${COSTON2_EXPLORER}/address/${address}`;
 
 function formatFxrp(value: bigint) {
-  return `${Number(formatUnits(value, 6)).toLocaleString(undefined, { maximumFractionDigits: 6 })} FXRP`;
+  return `${formatFxrpNumber(value)} FXRP`;
+}
+
+function formatFxrpNumber(value: bigint) {
+  return Number(formatUnits(value, 6)).toLocaleString(undefined, { maximumFractionDigits: 6 });
 }
 
 function ProgressStep({ number, label, complete, active }: { number: number; label: string; complete: boolean; active: boolean }) {
@@ -143,6 +158,32 @@ export default function LifecycleApp() {
     if (!completed) return 6;
     return 7;
   }, [account, projectCreated, approved, funded, evidenceSubmitted, completed]);
+
+  const knownProof: ProofTransactions | null =
+    projectId === 1n
+      ? projectOneTransactions
+      : projectId === 2n
+        ? projectTwoTransactions
+        : null;
+  const activityHash = (label: string) =>
+    activity.find((item) => item.label === label && item.status === "success")?.hash;
+  const proofTransactions = {
+    created: knownProof?.created ?? activityHash("Create project"),
+    funded: knownProof?.funded ?? activityHash("Fund escrow"),
+    evidence: knownProof?.evidence ?? activityHash("Submit evidence"),
+    released: knownProof?.released ?? activityHash("Release milestone"),
+  };
+  const proofReceipts = [
+    { number: "01", label: "Project created", detail: "Terms committed onchain", hash: proofTransactions.created },
+    { number: "02", label: "Escrow funded", detail: "FTSO-priced FXRP locked", hash: proofTransactions.funded },
+    { number: "03", label: "Evidence submitted", detail: "Delivery hash recorded", hash: proofTransactions.evidence },
+    { number: "04", label: "Payment released", detail: "Contractor paid in full", hash: proofTransactions.released },
+  ];
+  const projectUsd = Number(project?.totalUsdCents ?? 0n) / 100;
+  const projectFunded = project?.fundedFxrp ?? 0n;
+  const projectReleased = project?.releasedFxrp ?? 0n;
+  const projectRemainder = projectFunded - projectReleased;
+  const machineVerified = projectId === 1n || projectId === 2n;
 
   const refresh = async (connected = account, selectedId = projectId) => {
     setLoading(true);
@@ -423,15 +464,12 @@ export default function LifecycleApp() {
         <section className={`life-grid ${completed ? "is-complete" : ""}`}>
           <div className={`life-workflow ${completed ? "is-complete" : ""}`}>
             {completed && <article className="life-proof-card">
-              <div className="proof-card-heading"><span><BadgeCheck size={22} /></span><div><p>VERIFIED PROJECT #1</p><h2>Agreement, delivery, and payment—complete.</h2><span>The public Coston2 record confirms a $5 milestone was funded with 4.663805 FXRP and released in full.</span></div></div>
-              <div className="proof-metrics"><div><span>Project value</span><strong>$5.00</strong></div><div><span>FXRP funded</span><strong>4.663805</strong></div><div><span>FXRP released</span><strong>4.663805</strong></div><div><span>Escrow remainder</span><strong>0 FXRP</strong></div></div>
+              <div className="proof-card-heading"><span><BadgeCheck size={22} /></span><div><p>{machineVerified ? "MACHINE-VERIFIED" : "COMPLETED"} PROJECT #{projectId?.toString()}</p><h2>Agreement, delivery, and payment—complete.</h2><span>The Coston2 record confirms a ${projectUsd.toFixed(2)} milestone was funded with {formatFxrpNumber(projectFunded)} FXRP and released in full.</span></div></div>
+              <div className="proof-metrics"><div><span>Project value</span><strong>${projectUsd.toFixed(2)}</strong></div><div><span>FXRP funded</span><strong>{formatFxrpNumber(projectFunded)}</strong></div><div><span>FXRP released</span><strong>{formatFxrpNumber(projectReleased)}</strong></div><div><span>Escrow remainder</span><strong>{formatFxrp(projectRemainder)}</strong></div></div>
               <div className="proof-receipts">
-                <a href={txUrl(projectOneTransactions.created)} target="_blank" rel="noreferrer"><span>01</span><p><strong>Project created</strong><small>Terms committed onchain</small></p><ExternalLink size={14} /></a>
-                <a href={txUrl(projectOneTransactions.funded)} target="_blank" rel="noreferrer"><span>02</span><p><strong>Escrow funded</strong><small>FTSO-priced FXRP locked</small></p><ExternalLink size={14} /></a>
-                <a href={txUrl(projectOneTransactions.evidence)} target="_blank" rel="noreferrer"><span>03</span><p><strong>Evidence submitted</strong><small>Delivery hash recorded</small></p><ExternalLink size={14} /></a>
-                <a href={txUrl(projectOneTransactions.released)} target="_blank" rel="noreferrer"><span>04</span><p><strong>Payment released</strong><small>Contractor paid in full</small></p><ExternalLink size={14} /></a>
+                {proofReceipts.map((receipt) => receipt.hash ? <a href={txUrl(receipt.hash)} target="_blank" rel="noreferrer" key={receipt.number}><span>{receipt.number}</span><p><strong>{receipt.label}</strong><small>{receipt.detail}</small></p><ExternalLink size={14} /></a> : <div className="proof-receipt-pending" key={receipt.number}><span>{receipt.number}</span><p><strong>{receipt.label}</strong><small>Receipt unavailable in this browser session</small></p></div>)}
               </div>
-              <div className="proof-integrity"><ShieldCheck size={17} /><span>11 automated lifecycle checks passed · no FXRP trapped in escrow</span></div>
+              <div className="proof-integrity"><ShieldCheck size={17} /><span>{machineVerified ? "11 automated lifecycle checks passed · no FXRP trapped in escrow" : "Onchain completion confirmed · the project obligation is fully released"}</span></div>
             </article>}
             <article className={`life-card ${currentStep === 1 ? "focus" : ""}`}>
               <div className="life-card-head"><span><WalletCards size={18} /></span><div><p>STEP 01</p><h2>Connect the client wallet</h2></div>{account && <BadgeCheck size={18} />}</div>
