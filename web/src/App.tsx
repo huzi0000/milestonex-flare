@@ -224,7 +224,6 @@ function Dashboard({
   loadingNetwork,
   onRefreshNetwork,
   onOpenProject,
-  onCreate,
   liveLoading,
 }: {
   projects: Project[];
@@ -233,7 +232,6 @@ function Dashboard({
   liveLoading: boolean;
   onRefreshNetwork: () => void;
   onOpenProject: (project: Project) => void;
-  onCreate: () => void;
 }) {
   const liveProjects = projects.filter((project) => project.source === "live");
   const active = liveProjects.filter((project) => project.status === "funded");
@@ -248,7 +246,7 @@ function Dashboard({
           <div className="flare-kicker"><span className="flare-kicker-icon"><Blocks size={15} /></span><span>INTEROPERABLE ASSETS ON FLARE</span></div>
           <h1>Work protected.<br /><em>Payments proven.</em></h1>
           <p>Programmable FXRP escrow for global work. Agree in milestones, verify each delivery, and release value with public Coston2 proof.</p>
-          <div className="hero-actions"><a className="primary-button" href="/lifecycle.html"><Zap size={17} /> Explore verified lifecycle</a><button className="secondary-button" onClick={onCreate}><Plus size={17} /> Create a project</button></div>
+          <div className="hero-actions"><a className="primary-button" href="/lifecycle.html"><Zap size={17} /> Explore verified lifecycle</a><a className="secondary-button" href="/lifecycle.html?new=1"><Plus size={17} /> Create on Coston2</a></div>
           <div className="hero-trust-v4">
             <span><BadgeCheck size={15} /> Deployed contracts</span>
             <span><Gauge size={15} /> Live FTSOv2 pricing</span>
@@ -585,7 +583,7 @@ export default function App() {
         <header className="topbar"><button className="mobile-menu" onClick={() => setMobileNav(true)} aria-label="Open navigation"><Menu size={21} /></button><a className="mobile-top-brand" href="/"><BrandLogo /></a><div className="topbar-search"><ShieldCheck size={17} /><span>FXRP escrow · FTSOv2 pricing · Coston2 proof</span></div><div className="topbar-actions"><button className="judge-mode-button" onClick={() => setJudgeTourOpen(true)}><Sparkles size={15} /><span>Judge mode</span></button><ThemeToggle /><div className={`network-badge ${networkError ? "network-error" : ""}`}><span />{networkError ? "RPC retrying" : "Coston2 live"}</div>{wallet ? <button className="wallet-button connected" onClick={() => copyText(wallet)}><span className="wallet-avatar">H</span><p><strong>{shortAddress(wallet)}</strong><small>{walletBalance === null ? "Balance loading" : `${walletBalance.toFixed(2)} FXRP`}</small></p><ChevronDown size={14} /></button> : <button className="wallet-button" onClick={handleWallet} disabled={walletBusy}><WalletCards size={17} /><span>{walletBusy ? "Connecting…" : "Connect wallet"}</span></button>}</div></header>
         {walletError && <div className="toast-error"><Unplug size={16} /><span>{walletError}</span><button onClick={() => setWalletError("")}><X size={15} /></button></div>}
         <main>
-          {view === "dashboard" && <Dashboard projects={visibleProjects} snapshot={snapshot} loadingNetwork={networkLoading} liveLoading={liveLoading} onRefreshNetwork={refreshNetwork} onOpenProject={openProject} onCreate={() => changeView("create")} />}
+          {view === "dashboard" && <Dashboard projects={visibleProjects} snapshot={snapshot} loadingNetwork={networkLoading} liveLoading={liveLoading} onRefreshNetwork={refreshNetwork} onOpenProject={openProject} />}
           {view === "project" && <ProjectDetail project={selected} onBack={() => changeView("dashboard")} />}
           {view === "create" && <CreateProject xrpPrice={snapshot?.xrpUsdPrice ?? 1.07} onCancel={() => changeView("dashboard")} onCreated={(project) => { setProjects((current) => [project, ...current]); openProject(project); }} />}
           {view === "activity" && <ActivityView />}

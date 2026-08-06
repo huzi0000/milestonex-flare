@@ -118,6 +118,8 @@ export default function LifecycleApp() {
   const [c2Balance, setC2Balance] = useState(0n);
   const [fxrpBalance, setFxrpBalance] = useState(0n);
   const [projectId, setProjectId] = useState<bigint | null>(() => {
+    const requestedNew = new URLSearchParams(window.location.search).get("new") === "1";
+    if (requestedNew) return null;
     const saved = localStorage.getItem(STORAGE_PROJECT);
     return saved ? BigInt(saved) : 1n;
   });
@@ -136,6 +138,9 @@ export default function LifecycleApp() {
   const [activity, setActivity] = useState<ActivityItem[]>([]);
   const [loading, setLoading] = useState(true);
   const projectIdRef = useRef<bigint | null>(projectId);
+  const newProjectRequestedRef = useRef(
+    new URLSearchParams(window.location.search).get("new") === "1",
+  );
 
   const usdCents = BigInt(Math.max(0, Math.round((Number(amount) || 0) * 100)));
   const clientAddress = project?.client ?? account ?? (deployment.deployer as Address);
@@ -198,7 +203,26 @@ export default function LifecycleApp() {
         }),
       ]);
       setXrpUsd(snapshot.xrpUsdPrice);
-      setNextProjectId(next as bigint);
+      const nextId = next as bigint;
+      setNextProjectId(nextId);
+
+      if (newProjectRequestedRef.current) {
+        newProjectRequestedRef.current = false;
+        localStorage.setItem(STORAGE_PROJECT, nextId.toString());
+        setProjectId(nextId);
+        projectIdRef.current = nextId;
+        setProject(null);
+        setMilestone(null);
+        setAllowance(0n);
+        setQuotedFxrp(0n);
+        setContractor("");
+        setTitle("MilestoneX demo project");
+        setAmount("1");
+        setEvidence("MilestoneX delivery completed and verified on Coston2.");
+        setActivity([]);
+        window.history.replaceState({}, "", "/lifecycle.html");
+        return;
+      }
 
       if (connected) {
         const [native, token] = await Promise.all([
